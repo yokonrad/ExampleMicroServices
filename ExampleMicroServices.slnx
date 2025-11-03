@@ -10,6 +10,9 @@
     <Project Path="src/Core/Core.WebAPI/Core.WebAPI.csproj" />
   </Folder>
   <Folder Name="/src/Services/" />
+  <Folder Name="/src/Services/Comments/">
+    <Project Path="src/Services/Comments/Comments.WebAPI/Comments.WebAPI.csproj" />
+  </Folder>
   <Folder Name="/src/Services/Posts/">
     <Project Path="src/Services/Posts/Posts.WebAPI/Posts.WebAPI.csproj" />
   </Folder>
