@@ -7,6 +7,7 @@
   </Folder>
   <Folder Name="/src/" />
   <Folder Name="/src/Core/">
+    <Project Path="src/Core/Core.GatewayAPI/Core.GatewayAPI.csproj" />
     <Project Path="src/Core/Core.WebAPI/Core.WebAPI.csproj" />
   </Folder>
   <Folder Name="/src/Services/" />

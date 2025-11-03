@@ -1,0 +1,9 @@
+{
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5000",
+    "ServiceDiscoveryProvider": {
+      "Type": "AppConfiguration",
+      "PollingInterval": 1000
+    }
+  }
+}

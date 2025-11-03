@@ -1,0 +1,28 @@
+{
+  "Routes": [
+    {
+      "ServiceName": "posts",
+      "SwaggerKey": "posts",
+      "DownstreamPathTemplate": "/api/v1/posts/{everything}",
+      "UpstreamPathTemplate": "/posts/{everything}",
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Limit": 5,
+        "Period": "15s",
+        "PeriodTimespan": 15
+      }
+    },
+    {
+      "ServiceName": "comments",
+      "SwaggerKey": "comments",
+      "DownstreamPathTemplate": "/api/v1/comments/{everything}",
+      "UpstreamPathTemplate": "/comments/{everything}",
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Limit": 5,
+        "Period": "15s",
+        "PeriodTimespan": 15
+      }
+    }
+  ]
+}

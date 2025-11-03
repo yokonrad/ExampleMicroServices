@@ -1,0 +1,28 @@
+{
+  "SwaggerEndPoints": [
+    {
+      "Key": "posts",
+      "Config": [
+        {
+          "Name": "Posts API",
+          "Version": "v1",
+          "Service": {
+            "Name": "posts"
+          }
+        }
+      ]
+    },
+    {
+      "Key": "comments",
+      "Config": [
+        {
+          "Name": "Comments API",
+          "Version": "v1",
+          "Service": {
+            "Name": "comments"
+          }
+        }
+      ]
+    }
+  ]
+}
