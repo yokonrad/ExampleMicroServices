@@ -23,6 +23,7 @@
   <Folder Name="/tests/" />
   <Folder Name="/tests/Core/">
     <Project Path="tests/Core/Core.Domain.Tests/Core.Domain.Tests.csproj" />
+    <Project Path="tests/Core/Core.Infrastructure.Tests/Core.Infrastructure.Tests.csproj" />
   </Folder>
   <Folder Name="/tests/Services/" />
   <Project Path="docker/docker.dcproj">
