@@ -20,7 +20,9 @@
     <Project Path="src/Services/Posts/Posts.WebAPI/Posts.WebAPI.csproj" />
   </Folder>
   <Folder Name="/tests/" />
-  <Folder Name="/tests/Core/" />
+  <Folder Name="/tests/Core/">
+    <Project Path="tests/Core/Core.Domain.Tests/Core.Domain.Tests.csproj" />
+  </Folder>
   <Folder Name="/tests/Services/" />
   <Project Path="docker/docker.dcproj">
     <Build />
