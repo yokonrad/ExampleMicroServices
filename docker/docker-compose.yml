@@ -1,0 +1,36 @@
+services:
+  gateway:
+    profiles: ['backend']
+    image: 'gateway'
+    container_name: 'gateway'
+    build:
+      context: '../src'
+      dockerfile: 'Core/Core.GatewayAPI/Dockerfile'
+    depends_on:
+      posts:
+        condition: service_started
+      comments:
+        condition: service_started
+    ports:
+      - '5000:5000'
+    restart: 'unless-stopped'
+  posts:
+    profiles: ['backend']
+    image: 'posts'
+    container_name: 'posts'
+    build:
+      context: '../src'
+      dockerfile: 'Services/Posts/Posts.WebAPI/Dockerfile'
+    ports:
+      - '5001:5001'
+    restart: 'unless-stopped'
+  comments:
+    profiles: ['backend']
+    image: 'comments'
+    container_name: 'comments'
+    build:
+      context: '../src'
+      dockerfile: 'Services/Comments/Comments.WebAPI/Dockerfile'
+    ports:
+      - '5002:5002'
+    restart: 'unless-stopped'

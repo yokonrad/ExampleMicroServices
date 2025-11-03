@@ -3,10 +3,12 @@
     "Docker": {
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
-      "composeLaunchAction": "none",
-      "composeLaunchServiceName": "none",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "gateway",
       "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger",
-      "composeProfile": {}
+      "composeProfile": {
+        "includes": [ "backend" ]
+      }
     }
   }
 }
