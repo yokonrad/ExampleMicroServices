@@ -11,4 +11,7 @@
   <Folder Name="/tests/" />
   <Folder Name="/tests/Core/" />
   <Folder Name="/tests/Services/" />
+  <Project Path="docker/docker.dcproj">
+    <Build />
+  </Project>
 </Solution>
