@@ -29,7 +29,7 @@ public class ProgramExtensionTest
     }
 
     [Test]
-    public void IServiceCollection_Should_Be_Valid()
+    public void AddEntityFrameworkCoreSupport_IServiceCollection_Should_Be_Valid()
     {
         // Arrange
         var serviceCollection = new ServiceCollection();
@@ -45,7 +45,7 @@ public class ProgramExtensionTest
     }
 
     [Test]
-    public void IServiceProvider_Should_Be_Valid()
+    public void AddEntityFrameworkCoreSupport_IServiceProvider_Should_Be_Valid()
     {
         // Arrange
         var serviceCollection = new ServiceCollection();
