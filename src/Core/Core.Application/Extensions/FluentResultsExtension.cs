@@ -17,7 +17,7 @@ public static class FluentResultsExtension
             {
                 if (metadata.Value is not string value) continue;
 
-                if (dictionary.TryGetValue(metadata.Key, out var existingErrors)) dictionary[metadata.Key] = [.. existingErrors, value];
+                if (dictionary.TryGetValue(metadata.Key, out var existingValues)) dictionary[metadata.Key] = [.. existingValues, value];
                 else dictionary.Add(metadata.Key, [value]);
             }
         }

@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.Application.Extensions;
 
-public static class ProgramExtension
+public static class DependencyInjectionExtension
 {
     public static IServiceCollection AddFluentValidationSupport(this IServiceCollection serviceCollection)
     {
