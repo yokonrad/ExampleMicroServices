@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 
 namespace Core.WebAPI.Extensions;
 
-public static class ProgramExtension
+public static class DependencyInjectionExtension
 {
     public static WebApplicationBuilder AddHealthChecksSupport(this WebApplicationBuilder webApplicationBuilder)
     {
