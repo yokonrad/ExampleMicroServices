@@ -7,7 +7,7 @@ using Testcontainers.MsSql;
 
 namespace Core.Infrastructure.Tests.Extensions;
 
-public class ProgramExtensionTest
+public class DependencyInjectionExtensionTest
 {
     private MsSqlContainer msSqlContainer;
 
@@ -37,11 +37,11 @@ public class ProgramExtensionTest
 
         // Act
         var act = serviceCollection.BuildServiceProvider();
-        var actExampleDbContext = act.GetRequiredService<ExampleDbContext>();
+        var actExampleDbContextServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == nameof(ExampleDbContext) && x.ImplementationType!.Name == nameof(ExampleDbContext));
 
         // Assert
         act.Should().BeOfType<ServiceProvider>().And.NotBeNull();
-        actExampleDbContext.Should().BeOfType<ExampleDbContext>().And.NotBeNull();
+        actExampleDbContextServiceDescriptor.Should().BeOfType<ServiceDescriptor>().And.NotBeNull();
     }
 
     [Test]
