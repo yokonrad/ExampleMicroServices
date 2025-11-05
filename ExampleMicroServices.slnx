@@ -20,6 +20,7 @@
   </Folder>
   <Folder Name="/src/Services/Posts/">
     <Project Path="src/Services/Posts/Posts.Domain/Posts.Domain.csproj" />
+    <Project Path="src/Services/Posts/Posts.Infrastructure/Posts.Infrastructure.csproj" />
     <Project Path="src/Services/Posts/Posts.WebAPI/Posts.WebAPI.csproj" />
   </Folder>
   <Folder Name="/tests/" />
