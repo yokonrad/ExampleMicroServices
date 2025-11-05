@@ -4,7 +4,7 @@ using Ocelot.Middleware;
 
 namespace Core.GatewayAPI.Extensions;
 
-public static class ProgramExtension
+public static class DependencyInjectionExtension
 {
     private const string OcelotConfigurationPath = "OcelotConfiguration";
 
