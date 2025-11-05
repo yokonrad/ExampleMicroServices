@@ -18,10 +18,10 @@ public class ExampleRequestValidator : AbstractValidator<ExampleRequest>
 
 public class ExampleRequestHandler() : IRequestHandler<ExampleRequest, bool>
 {
-    public Task<bool> Handle(ExampleRequest exampleRequest, CancellationToken cancellationToken)
+    public async Task<bool> Handle(ExampleRequest exampleRequest, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(exampleRequest.Example)) throw new NullReferenceException();
 
-        return Task.FromResult(true);
+        return await Task.FromResult(true);
     }
 }
