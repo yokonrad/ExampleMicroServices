@@ -19,6 +19,7 @@
     <Project Path="src/Services/Comments/Comments.WebAPI/Comments.WebAPI.csproj" />
   </Folder>
   <Folder Name="/src/Services/Posts/">
+    <Project Path="src/Services/Posts/Posts.Domain/Posts.Domain.csproj" />
     <Project Path="src/Services/Posts/Posts.WebAPI/Posts.WebAPI.csproj" />
   </Folder>
   <Folder Name="/tests/" />
