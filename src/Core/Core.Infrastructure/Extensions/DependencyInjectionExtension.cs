@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.Infrastructure.Extensions;
 
-public static class ProgramExtension
+public static class DependencyInjectionExtension
 {
     public static IServiceCollection AddEntityFrameworkCoreSupport<T>(this IServiceCollection serviceCollection, Action<DbContextOptionsBuilder> actionDbContextOptionsBuilder) where T : DbContext
     {
