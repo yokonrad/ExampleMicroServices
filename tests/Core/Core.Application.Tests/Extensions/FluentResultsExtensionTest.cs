@@ -2,7 +2,6 @@
 using Core.Application.Extensions;
 using FluentAssertions;
 using FluentResults;
-using FluentResults.Extensions.FluentAssertions;
 
 namespace Core.Application.Tests.Extensions;
 
