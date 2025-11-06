@@ -19,7 +19,7 @@ public class DependencyInjectionExtensionTest
 
         // Act
         var act = serviceCollection.BuildServiceProvider();
-        var actExampleRequestValidatorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(IValidator)) && x.ImplementationType!.Name == nameof(ExampleRequestValidator));
+        var actExampleRequestValidatorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(IValidator)) && x.ImplementationType?.Name == nameof(ExampleRequestValidator));
 
         // Assert
         act.Should().BeOfType<ServiceProvider>().And.NotBeNull();
@@ -81,10 +81,10 @@ public class DependencyInjectionExtensionTest
 
         // Act
         var act = serviceCollection.BuildServiceProvider();
-        var actExampleRequestHandlerServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(IRequestHandler<,>)) && x.ImplementationType!.Name == nameof(ExampleRequestHandler));
-        var actExceptionBehaviorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(IPipelineBehavior<,>)) && x.ImplementationType!.Name.Contains(nameof(ExceptionBehavior<,>)));
-        var actLoggingBehaviorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(IPipelineBehavior<,>)) && x.ImplementationType!.Name.Contains(nameof(LoggingBehavior<,>)));
-        var actPerformanceBehaviorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(IPipelineBehavior<,>)) && x.ImplementationType!.Name.Contains(nameof(PerformanceBehavior<,>)));
+        var actExampleRequestHandlerServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(IRequestHandler<,>)) && x.ImplementationType?.Name == nameof(ExampleRequestHandler));
+        var actExceptionBehaviorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(IPipelineBehavior<,>)) && x.ImplementationType?.Name.Contains(nameof(ExceptionBehavior<,>)) == true);
+        var actLoggingBehaviorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(IPipelineBehavior<,>)) && x.ImplementationType?.Name.Contains(nameof(LoggingBehavior<,>)) == true);
+        var actPerformanceBehaviorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(IPipelineBehavior<,>)) && x.ImplementationType?.Name.Contains(nameof(PerformanceBehavior<,>)) == true);
 
         // Assert
         act.Should().BeOfType<ServiceProvider>().And.NotBeNull();
