@@ -37,7 +37,7 @@ public class DependencyInjectionExtensionTest
 
         // Act
         var act = serviceCollection.BuildServiceProvider();
-        var actExampleDbContextServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == nameof(ExampleDbContext) && x.ImplementationType!.Name == nameof(ExampleDbContext));
+        var actExampleDbContextServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == nameof(ExampleDbContext) && x.ImplementationType?.Name == nameof(ExampleDbContext));
 
         // Assert
         act.Should().BeOfType<ServiceProvider>().And.NotBeNull();
