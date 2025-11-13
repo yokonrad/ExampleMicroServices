@@ -19,7 +19,7 @@ public class DependencyInjectionExtensionTest
 
         // Act
         var act = serviceCollection.BuildServiceProvider();
-        var actExampleRequestValidatorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(IValidator)) && x.ImplementationType?.Name == nameof(ExampleRequestValidator));
+        var actExampleRequestValidatorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(IValidator<>)) && x.ImplementationType?.Name == nameof(ExampleRequestValidator));
 
         // Assert
         act.Should().BeOfType<ServiceProvider>().And.NotBeNull();

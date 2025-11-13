@@ -8,7 +8,7 @@ namespace Core.Application.Tests.Extensions;
 public class FluentResultsExtensionTest
 {
     [Test]
-    public void GetValidationErrors_Should_Be_Not_Empty_When_Fail()
+    public void GetValidationErrors_Should_Be_Not_Empty_When_Invalid()
     {
         // Arrange
         var result = Result.Fail<ValidationError>([new ValidationError("Property name", "Error message")]);
@@ -21,7 +21,7 @@ public class FluentResultsExtensionTest
     }
 
     [Test]
-    public void GetValidationErrors_Should_Be_Empty_When_Ok()
+    public void GetValidationErrors_Should_Be_Empty_When_Valid()
     {
         // Arrange
         var result = Result.Ok("Success message");
