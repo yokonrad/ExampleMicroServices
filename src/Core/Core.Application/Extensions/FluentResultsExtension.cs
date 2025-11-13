@@ -11,7 +11,7 @@ public static class FluentResultsExtension
 
         foreach (var error in result.Errors)
         {
-            if (!error.Message.Contains(ValidationError.Message)) continue;
+            if (error is not ValidationError) continue;
 
             foreach (var metadata in error.Metadata)
             {

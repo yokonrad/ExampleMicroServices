@@ -19,7 +19,7 @@ public class ExceptionBehavior<TRequest, TResponse>(ILogger<ExceptionBehavior<TR
         }
         catch (Exception exception)
         {
-            logger.LogError(exception, "[{ClassName}] Handled request: {RequestName} with exception: {ExceptionMessage}", GetType().Name, typeof(TRequest).Name, exception.Message);
+            logger.LogError(exception, "[{ClassName}] Handled request: {RequestName} with response exception: {ExceptionMessage}", GetType().Name, typeof(TRequest).Name, exception.Message);
 
             return default;
         }
