@@ -31,7 +31,7 @@ public class DependencyInjectionExtensionTest
     }
 
     [Test]
-    public void IServiceCollection_Should_Be_Valid()
+    public void AddPostsInfrastructureSupport_IServiceCollection_Should_Be_Valid()
     {
         // Arrange
         var serviceCollection = new ServiceCollection();
@@ -49,7 +49,7 @@ public class DependencyInjectionExtensionTest
     }
 
     [Test]
-    public void IServiceProvider_Should_Be_Valid()
+    public void AddPostsInfrastructureSupport_IServiceProvider_Should_Be_Valid()
     {
         // Arrange
         var serviceCollection = new ServiceCollection();
