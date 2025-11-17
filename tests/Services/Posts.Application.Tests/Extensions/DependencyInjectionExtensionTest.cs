@@ -21,23 +21,23 @@ public class DependencyInjectionExtensionTest
 
         // Act
         var act = serviceCollection.BuildServiceProvider();
-        var actMapperServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == nameof(IMapper));
-        var actCreatePostCommandValidatorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(IValidator<>)) && x.ImplementationType?.Name == nameof(CreatePostCommandValidator));
-        var actDeletePostCommandValidatorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(IValidator<>)) && x.ImplementationType?.Name == nameof(DeletePostCommandValidator));
-        var actUpdatePartialPostCommandValidatorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(IValidator<>)) && x.ImplementationType?.Name == nameof(UpdatePartialPostCommandValidator));
-        var actUpdatePostCommandValidatorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(IValidator<>)) && x.ImplementationType?.Name == nameof(UpdatePostCommandValidator));
-        var actGetPostByGuidQueryValidatorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(IValidator<>)) && x.ImplementationType?.Name == nameof(GetPostByGuidQueryValidator));
-        var actGetPostQueryValidatorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(IValidator<>)) && x.ImplementationType?.Name == nameof(GetPostQueryValidator));
-        var actCreatePostCommandHandlerServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(IRequestHandler<,>)) && x.ImplementationType?.Name == nameof(CreatePostCommandHandler));
-        var actDeletePostCommandHandlerServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(IRequestHandler<,>)) && x.ImplementationType?.Name == nameof(DeletePostCommandHandler));
-        var actUpdatePartialPostCommandHandlerServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(IRequestHandler<,>)) && x.ImplementationType?.Name == nameof(UpdatePartialPostCommandHandler));
-        var actUpdatePostCommandHandlerServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(IRequestHandler<,>)) && x.ImplementationType?.Name == nameof(UpdatePostCommandHandler));
-        var actGetPostByGuidQueryHandlerServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(IRequestHandler<,>)) && x.ImplementationType?.Name == nameof(GetPostByGuidQueryHandler));
-        var actGetPostQueryHandlerServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(IRequestHandler<,>)) && x.ImplementationType?.Name == nameof(GetPostQueryHandler));
-        var actCreatedPostNotificationHandlerServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(INotificationHandler<>)) && x.ImplementationType?.Name == nameof(CreatedPostNotificationHandler));
-        var actDeletedPostNotificationHandlerServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(INotificationHandler<>)) && x.ImplementationType?.Name == nameof(DeletedPostNotificationHandler));
-        var actUpdatedPartiallyPostNotificationHandlerServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(INotificationHandler<>)) && x.ImplementationType?.Name == nameof(UpdatedPartiallyPostNotificationHandler));
-        var actUpdatedPostNotificationHandlerServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name.Contains(nameof(INotificationHandler<>)) && x.ImplementationType?.Name == nameof(UpdatedPostNotificationHandler));
+        var actMapperServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(IMapper).Name);
+        var actCreatePostCommandValidatorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(IValidator<>).Name && x.ImplementationType?.Name == typeof(CreatePostCommandValidator).Name);
+        var actDeletePostCommandValidatorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(IValidator<>).Name && x.ImplementationType?.Name == typeof(DeletePostCommandValidator).Name);
+        var actUpdatePartialPostCommandValidatorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(IValidator<>).Name && x.ImplementationType?.Name == typeof(UpdatePartialPostCommandValidator).Name);
+        var actUpdatePostCommandValidatorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(IValidator<>).Name && x.ImplementationType?.Name == typeof(UpdatePostCommandValidator).Name);
+        var actGetPostByGuidQueryValidatorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(IValidator<>).Name && x.ImplementationType?.Name == typeof(GetPostByGuidQueryValidator).Name);
+        var actGetPostQueryValidatorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(IValidator<>).Name && x.ImplementationType?.Name == typeof(GetPostQueryValidator).Name);
+        var actCreatePostCommandHandlerServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(IRequestHandler<,>).Name && x.ImplementationType?.Name == typeof(CreatePostCommandHandler).Name);
+        var actDeletePostCommandHandlerServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(IRequestHandler<,>).Name && x.ImplementationType?.Name == typeof(DeletePostCommandHandler).Name);
+        var actUpdatePartialPostCommandHandlerServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(IRequestHandler<,>).Name && x.ImplementationType?.Name == typeof(UpdatePartialPostCommandHandler).Name);
+        var actUpdatePostCommandHandlerServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(IRequestHandler<,>).Name && x.ImplementationType?.Name == typeof(UpdatePostCommandHandler).Name);
+        var actGetPostByGuidQueryHandlerServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(IRequestHandler<,>).Name && x.ImplementationType?.Name == typeof(GetPostByGuidQueryHandler).Name);
+        var actGetPostQueryHandlerServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(IRequestHandler<,>).Name && x.ImplementationType?.Name == typeof(GetPostQueryHandler).Name);
+        var actCreatedPostNotificationHandlerServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(INotificationHandler<>).Name && x.ImplementationType?.Name == typeof(CreatedPostNotificationHandler).Name);
+        var actDeletedPostNotificationHandlerServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(INotificationHandler<>).Name && x.ImplementationType?.Name == typeof(DeletedPostNotificationHandler).Name);
+        var actUpdatedPartiallyPostNotificationHandlerServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(INotificationHandler<>).Name && x.ImplementationType?.Name == typeof(UpdatedPartiallyPostNotificationHandler).Name);
+        var actUpdatedPostNotificationHandlerServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(INotificationHandler<>).Name && x.ImplementationType?.Name == typeof(UpdatedPostNotificationHandler).Name);
 
         // Assert
         act.Should().BeOfType<ServiceProvider>().And.NotBeNull();
