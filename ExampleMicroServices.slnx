@@ -29,6 +29,7 @@
     <Project Path="tests/Core/Core.Application.Tests/Core.Application.Tests.csproj" />
     <Project Path="tests/Core/Core.Domain.Tests/Core.Domain.Tests.csproj" />
     <Project Path="tests/Core/Core.Infrastructure.Tests/Core.Infrastructure.Tests.csproj" />
+    <Project Path="tests/Core/Core.WebAPI.Tests/Core.WebAPI.Tests.csproj" />
   </Folder>
   <Folder Name="/tests/Services/" />
   <Folder Name="/tests/Services/Posts/">
