@@ -19,9 +19,8 @@ public static class DependencyInjectionExtension
 
     public static WebApplication AddHealthChecksSupport(this WebApplication webApplication)
     {
-        webApplication.MapHealthChecks("/health").RequireHost("localhost");
         webApplication.UseRouting();
-        webApplication.UseEndpoints(_ => { });
+        webApplication.MapHealthChecks("/health").RequireHost("localhost").WithDisplayName("HealthChecks").AllowAnonymous();
 
         return webApplication;
     }
