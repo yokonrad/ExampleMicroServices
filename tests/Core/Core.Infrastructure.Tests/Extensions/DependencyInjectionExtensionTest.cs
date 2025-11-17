@@ -37,7 +37,7 @@ public class DependencyInjectionExtensionTest
 
         // Act
         var act = serviceCollection.BuildServiceProvider();
-        var actExampleDbContextServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == nameof(ExampleDbContext) && x.ImplementationType?.Name == nameof(ExampleDbContext));
+        var actExampleDbContextServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(ExampleDbContext).Name && x.ImplementationType?.Name == typeof(ExampleDbContext).Name);
 
         // Assert
         act.Should().BeOfType<ServiceProvider>().And.NotBeNull();
@@ -51,16 +51,17 @@ public class DependencyInjectionExtensionTest
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddEntityFrameworkCoreSupport<ExampleDbContext>(x => x.UseSqlServer(msSqlContainer.GetConnectionString()));
 
-        var serviceProvider = serviceCollection.BuildServiceProvider();
-        serviceProvider.AddEntityFrameworkCoreSupport<ExampleDbContext>();
+        // Act
+        var act = serviceCollection.BuildServiceProvider();
+        act.AddEntityFrameworkCoreSupport<ExampleDbContext>();
 
-        using var scope = serviceProvider.CreateScope();
+        using var scope = act.CreateScope();
         using var exampleDbContext = scope.ServiceProvider.GetRequiredService<ExampleDbContext>();
 
-        // Act
-        var act = exampleDbContext.Database.EnsureCreated();
+        var actEnsureCreated = exampleDbContext.Database.EnsureCreated();
 
         // Assert
-        act.Should().BeFalse();
+        act.Should().BeOfType<ServiceProvider>().And.NotBeNull();
+        actEnsureCreated.Should().BeFalse();
     }
 }
