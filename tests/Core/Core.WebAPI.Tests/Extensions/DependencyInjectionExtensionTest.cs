@@ -1,4 +1,5 @@
-﻿using Core.WebAPI.Extensions;
+﻿using Core.Application.Extensions;
+using Core.WebAPI.Extensions;
 using FastEndpoints;
 using FluentAssertions;
 using Microsoft.AspNetCore.Builder;
@@ -87,6 +88,7 @@ public class DependencyInjectionExtensionTest
     {
         // Arrange
         var webApplicationBuilder = WebApplication.CreateBuilder();
+        webApplicationBuilder.Services.AddMediatRSupport();
         webApplicationBuilder.AddFastEndpointsSupport();
 
         // Act
