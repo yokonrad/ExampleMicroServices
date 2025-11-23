@@ -17,11 +17,11 @@ using Posts.Domain.Interfaces;
 
 namespace Posts.Application.Tests.Queries;
 
-public class GetPostQueryTest
+public class GetPostsQueryTest
 {
     private ServiceProvider serviceProvider;
     private IMapper mapper;
-    private Mock<IValidator<GetPostQuery>> mockValidator;
+    private Mock<IValidator<GetPostsQuery>> mockValidator;
     private Mock<IPostRepository> mockPostRepository;
 
     [SetUp]
@@ -33,7 +33,7 @@ public class GetPostQueryTest
 
         serviceProvider = serviceCollection.BuildServiceProvider();
         mapper = serviceProvider.GetRequiredService<IMapper>();
-        mockValidator = new Mock<IValidator<GetPostQuery>>();
+        mockValidator = new Mock<IValidator<GetPostsQuery>>();
         mockPostRepository = new Mock<IPostRepository>();
     }
 
@@ -47,18 +47,18 @@ public class GetPostQueryTest
     public async Task Should_Be_Invalid_When_ValidationError()
     {
         // Arrange
-        var fakerGetPostQuery = new AutoFaker<GetPostQuery>();
-        var getPostQuery = fakerGetPostQuery.Generate();
+        var fakerGetPostsQuery = new AutoFaker<GetPostsQuery>();
+        var getPostsQuery = fakerGetPostsQuery.Generate();
 
-        mockValidator.Setup(x => x.Validate(getPostQuery)).Returns(new ValidationResult([new ValidationFailure("Property name", "Error message")]));
+        mockValidator.Setup(x => x.Validate(getPostsQuery)).Returns(new ValidationResult([new ValidationFailure("Property name", "Error message")]));
 
-        var validationResult = mockValidator.Object.Validate(getPostQuery);
+        var validationResult = mockValidator.Object.Validate(getPostsQuery);
         var validationResultErrors = validationResult.GetValidationErrors();
 
-        var getPostQueryHandler = new GetPostQueryHandler(mapper, mockValidator.Object, mockPostRepository.Object);
+        var getPostsQueryHandler = new GetPostsQueryHandler(mapper, mockValidator.Object, mockPostRepository.Object);
 
         // Act
-        var act = await getPostQueryHandler.Handle(getPostQuery, It.IsAny<CancellationToken>());
+        var act = await getPostsQueryHandler.Handle(getPostsQuery, It.IsAny<CancellationToken>());
 
         // Assert
         act.IsFailed.Should().BeTrue();
@@ -73,16 +73,16 @@ public class GetPostQueryTest
         var posts = Array.Empty<Post>();
         var postDtos = mapper.Map<IEnumerable<PostDto>>(posts);
 
-        var fakerGetPostQuery = new AutoFaker<GetPostQuery>();
-        var getPostQuery = fakerGetPostQuery.Generate();
+        var fakerGetPostsQuery = new AutoFaker<GetPostsQuery>();
+        var getPostsQuery = fakerGetPostsQuery.Generate();
 
-        mockValidator.Setup(x => x.Validate(getPostQuery)).Returns(new ValidationResult());
+        mockValidator.Setup(x => x.Validate(getPostsQuery)).Returns(new ValidationResult());
         mockPostRepository.Setup(x => x.GetAsync(It.IsAny<CancellationToken>())).ReturnsAsync(posts);
 
-        var getPostQueryHandler = new GetPostQueryHandler(mapper, mockValidator.Object, mockPostRepository.Object);
+        var getPostsQueryHandler = new GetPostsQueryHandler(mapper, mockValidator.Object, mockPostRepository.Object);
 
         // Act
-        var act = await getPostQueryHandler.Handle(getPostQuery, It.IsAny<CancellationToken>());
+        var act = await getPostsQueryHandler.Handle(getPostsQuery, It.IsAny<CancellationToken>());
 
         // Assert
         act.IsSuccess.Should().BeTrue();
@@ -97,16 +97,16 @@ public class GetPostQueryTest
         var posts = fakerPost.Generate(100).ToArray();
         var postDtos = mapper.Map<IEnumerable<PostDto>>(posts);
 
-        var fakerGetPostQuery = new AutoFaker<GetPostQuery>();
-        var getPostQuery = fakerGetPostQuery.Generate();
+        var fakerGetPostsQuery = new AutoFaker<GetPostsQuery>();
+        var getPostsQuery = fakerGetPostsQuery.Generate();
 
-        mockValidator.Setup(x => x.Validate(getPostQuery)).Returns(new ValidationResult());
+        mockValidator.Setup(x => x.Validate(getPostsQuery)).Returns(new ValidationResult());
         mockPostRepository.Setup(x => x.GetAsync(It.IsAny<CancellationToken>())).ReturnsAsync(posts);
 
-        var getPostQueryHandler = new GetPostQueryHandler(mapper, mockValidator.Object, mockPostRepository.Object);
+        var getPostsQueryHandler = new GetPostsQueryHandler(mapper, mockValidator.Object, mockPostRepository.Object);
 
         // Act
-        var act = await getPostQueryHandler.Handle(getPostQuery, It.IsAny<CancellationToken>());
+        var act = await getPostsQueryHandler.Handle(getPostsQuery, It.IsAny<CancellationToken>());
 
         // Assert
         act.IsSuccess.Should().BeTrue();
