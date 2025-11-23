@@ -36,6 +36,7 @@
     <Project Path="tests/Services/Posts.Application.Tests/Posts.Application.Tests.csproj" />
     <Project Path="tests/Services/Posts.Domain.Tests/Posts.Domain.Tests.csproj" />
     <Project Path="tests/Services/Posts.Infrastructure.Tests/Posts.Infrastructure.Tests.csproj" />
+    <Project Path="tests/Services/Posts.WebAPI.Tests/Posts.WebAPI.Tests.csproj" />
   </Folder>
   <Project Path="docker/docker.dcproj">
     <Build />
