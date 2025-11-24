@@ -12,6 +12,8 @@
     <PackageReference Include="AutoBogus" Version="2.13.1" />
     <PackageReference Include="coverlet.collector" Version="6.0.4" />
     <PackageReference Include="FluentAssertions" Version="8.8.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <PackageReference Include="Moq" Version="4.20.72" />
     <PackageReference Include="NUnit" Version="4.4.0" />
@@ -23,8 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Services\Posts\Posts.Application\Posts.Application.csproj" />
-    <ProjectReference Include="..\..\..\src\Services\Posts\Posts.WebAPI\Posts.WebAPI.csproj" />
+    <ProjectReference Include="..\..\..\..\src\Services\Posts\Posts.Application\Posts.Application.csproj" />
+    <ProjectReference Include="..\..\..\..\src\Services\Posts\Posts.Domain\Posts.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
