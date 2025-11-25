@@ -35,11 +35,9 @@ public class ExampleEndpoint(IMediator mediator) : Endpoint<ExampleEndpointReque
 
     public override async Task HandleAsync(ExampleEndpointRequest exampleEndpointRequest, CancellationToken ct)
     {
-        var exampleRequest = await mediator.Send(new ExampleRequest
+        await Send.SendResponse(await mediator.Send(new ExampleRequest
         {
             Example = exampleEndpointRequest.Example,
-        }, ct);
-
-        await Send.SendResponse(exampleRequest, Map.FromEntity, ct);
+        }, ct), Map.FromEntity, ct);
     }
 }
