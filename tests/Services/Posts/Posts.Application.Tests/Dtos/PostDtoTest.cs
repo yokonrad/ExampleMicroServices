@@ -10,10 +10,10 @@ public class PostDtoTest
     public void Should_Be_Valid()
     {
         // Arrange
-        var fakerPost = new AutoFaker<PostDto>();
+        var fakerPostDto = new AutoFaker<PostDto>();
 
         // Act
-        var act = fakerPost.Generate();
+        var act = fakerPostDto.Generate();
 
         // Assert
         act.Should().BeOfType<PostDto>().And.NotBeNull();

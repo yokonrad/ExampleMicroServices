@@ -65,7 +65,7 @@ public class DeletePostCommandTest
         // Assert
         act.IsFailed.Should().BeTrue();
         act.HasError<ValidationError>(out var actErrors).Should().BeTrue();
-        actErrors.Should().BeEquivalentTo(validationResultErrors);
+        actErrors.Should().NotBeNull().And.NotBeEmpty().And.BeEquivalentTo(validationResultErrors);
     }
 
     [Test]
@@ -85,7 +85,7 @@ public class DeletePostCommandTest
         // Assert
         act.IsFailed.Should().BeTrue();
         act.HasError<NotFoundError>(out var actErrors).Should().BeTrue();
-        actErrors.Should().BeEquivalentTo([new NotFoundError()]);
+        actErrors.Should().NotBeNull().And.NotBeEmpty().And.BeEquivalentTo([new NotFoundError()]);
     }
 
     [Test]
@@ -111,7 +111,7 @@ public class DeletePostCommandTest
         // Assert
         act.IsFailed.Should().BeTrue();
         act.HasError<SaveError>(out var actErrors).Should().BeTrue();
-        actErrors.Should().BeEquivalentTo([new SaveError()]);
+        actErrors.Should().NotBeNull().And.NotBeEmpty().And.BeEquivalentTo([new SaveError()]);
     }
 
     [Test]

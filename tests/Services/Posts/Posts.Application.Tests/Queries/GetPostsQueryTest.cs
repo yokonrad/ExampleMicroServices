@@ -63,11 +63,11 @@ public class GetPostsQueryTest
         // Assert
         act.IsFailed.Should().BeTrue();
         act.HasError<ValidationError>(out var actErrors).Should().BeTrue();
-        actErrors.Should().BeEquivalentTo(validationResultErrors);
+        actErrors.Should().NotBeNull().And.NotBeEmpty().And.BeEquivalentTo(validationResultErrors);
     }
 
     [Test]
-    public async Task Should_Be_Valid_When_Posts_Empty()
+    public async Task Should_Be_Valid_When_Empty()
     {
         // Arrange
         var posts = Array.Empty<Post>();
@@ -90,7 +90,7 @@ public class GetPostsQueryTest
     }
 
     [Test]
-    public async Task Should_Be_Valid_When_Posts_Not_Empty()
+    public async Task Should_Be_Valid_When_Not_Empty()
     {
         // Arrange
         var fakerPost = new AutoFaker<Post>();
