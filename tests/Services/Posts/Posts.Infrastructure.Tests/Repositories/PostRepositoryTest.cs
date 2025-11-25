@@ -54,13 +54,33 @@ public class PostRepositoryTest
     }
 
     [Test]
-    public async Task GetAsync_Should_Be_Valid()
+    public async Task GetAsync_Should_Be_Valid_When_Empty()
     {
-        // Arrange & Act
+        // Arrange
+        var posts = Array.Empty<Post>();
+
+        // Act
         var act = await postRepository.GetAsync(It.IsAny<CancellationToken>());
 
         // Assert
-        act.Should().BeOfType<Post[]>();
+        act.Should().BeOfType<Post[]>().And.BeEquivalentTo(posts).And.BeEmpty();
+    }
+
+    [Test]
+    public async Task GetAsync_Should_Be_Valid_When_Not_Empty()
+    {
+        // Arrange
+        var fakerPost = new AutoFaker<Post>();
+        var posts = fakerPost.Generate(100);
+
+        postDbContext.Posts.AddRange(posts);
+        await postDbContext.SaveChangesAsync(It.IsAny<CancellationToken>());
+
+        // Act
+        var act = await postRepository.GetAsync(It.IsAny<CancellationToken>());
+
+        // Assert
+        act.Should().BeOfType<Post[]>().And.BeEquivalentTo(posts).And.NotBeEmpty();
     }
 
     [Test]
