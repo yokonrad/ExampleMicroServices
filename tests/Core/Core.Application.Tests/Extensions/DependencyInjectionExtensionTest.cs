@@ -34,14 +34,14 @@ public class DependencyInjectionExtensionTest
         serviceCollection.AddFluentValidationSupport();
 
         // Act
-        var actValidatorOptionsLanguageManager = ValidatorOptions.Global.LanguageManager.Enabled;
-        var actValidatorOptionsDisplayNameResolver = ValidatorOptions.Global.DisplayNameResolver;
-        var actValidatorOptionsPropertyNameResolver = ValidatorOptions.Global.PropertyNameResolver;
+        var actValidatorOptionsGlobalLanguageManager = ValidatorOptions.Global.LanguageManager.Enabled;
+        var actValidatorOptionsGlobalDisplayNameResolver = ValidatorOptions.Global.DisplayNameResolver;
+        var actValidatorOptionsGlobalPropertyNameResolver = ValidatorOptions.Global.PropertyNameResolver;
 
         // Assert
-        actValidatorOptionsLanguageManager.Should().BeFalse();
-        actValidatorOptionsDisplayNameResolver.Should().NotBeNull();
-        actValidatorOptionsPropertyNameResolver.Should().NotBeNull();
+        actValidatorOptionsGlobalLanguageManager.Should().BeFalse();
+        actValidatorOptionsGlobalDisplayNameResolver.Should().NotBeNull();
+        actValidatorOptionsGlobalPropertyNameResolver.Should().NotBeNull();
     }
 
     [Test]
@@ -52,10 +52,10 @@ public class DependencyInjectionExtensionTest
         serviceCollection.AddFluentValidationSupport();
 
         // Act
-        var actValidatorOptionsDisplayNameResolver = ValidatorOptions.Global.DisplayNameResolver(typeof(ExampleRequest), typeof(ExampleRequest).GetProperty(nameof(ExampleRequest.Example)), null);
+        var actValidatorOptionsGlobalDisplayNameResolver = ValidatorOptions.Global.DisplayNameResolver(typeof(ExampleRequest), typeof(ExampleRequest).GetProperty(nameof(ExampleRequest.Example)), null);
 
         // Assert
-        actValidatorOptionsDisplayNameResolver.Should().Be(nameof(ExampleRequest.Example).ToCamelCase());
+        actValidatorOptionsGlobalDisplayNameResolver.Should().Be(nameof(ExampleRequest.Example).ToCamelCase());
     }
 
     [Test]
@@ -66,10 +66,10 @@ public class DependencyInjectionExtensionTest
         serviceCollection.AddFluentValidationSupport();
 
         // Act
-        var actValidatorOptionsPropertyNameResolver = ValidatorOptions.Global.PropertyNameResolver(typeof(ExampleRequest), typeof(ExampleRequest).GetProperty(nameof(ExampleRequest.Example)), null);
+        var actValidatorOptionsGlobalPropertyNameResolver = ValidatorOptions.Global.PropertyNameResolver(typeof(ExampleRequest), typeof(ExampleRequest).GetProperty(nameof(ExampleRequest.Example)), null);
 
         // Assert
-        actValidatorOptionsPropertyNameResolver.Should().Be(nameof(ExampleRequest.Example).ToCamelCase());
+        actValidatorOptionsGlobalPropertyNameResolver.Should().Be(nameof(ExampleRequest.Example).ToCamelCase());
     }
 
     [Test]

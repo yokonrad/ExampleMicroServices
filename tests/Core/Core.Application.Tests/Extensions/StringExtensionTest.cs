@@ -9,8 +9,8 @@ public class StringExtensionTest
     public void ToCamelCase_Should_Be_Valid()
     {
         // Arrange
-        const string input = "Example";
-        const string output = "example";
+        const string input = "ExampleString";
+        const string output = "exampleString";
 
         // Act
         var act = input.ToCamelCase();
