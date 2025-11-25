@@ -9,10 +9,10 @@ public class PostDbContext(DbContextOptions<PostDbContext> options) : DbContext(
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Post>().HasKey(t => t.Guid);
-        modelBuilder.Entity<Post>().Property(t => t.Guid).IsRequired();
-        modelBuilder.Entity<Post>().Property(t => t.Title).IsRequired();
-        modelBuilder.Entity<Post>().Property(t => t.Text).IsRequired();
-        modelBuilder.Entity<Post>().Property(t => t.Visible).IsRequired();
+        modelBuilder.Entity<Post>().HasKey(p => p.Guid);
+        modelBuilder.Entity<Post>().Property(p => p.Guid).IsRequired();
+        modelBuilder.Entity<Post>().Property(p => p.Title).IsRequired();
+        modelBuilder.Entity<Post>().Property(p => p.Text).IsRequired();
+        modelBuilder.Entity<Post>().Property(p => p.Visible).IsRequired();
     }
 }
