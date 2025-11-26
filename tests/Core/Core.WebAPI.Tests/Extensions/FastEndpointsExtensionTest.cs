@@ -57,6 +57,23 @@ public class FastEndpointsExtensionTest
     }
 
     [Test]
+    public async Task SendResponse_Should_Be_Status500InternalServerError_When_ServiceError()
+    {
+        // Arrange
+        var result = Result.Fail(new ServiceError());
+
+        var exampleEndpointMapper = new ExampleEndpointMapper();
+        var exampleEndpoint = Factory.Create<ExampleEndpoint>(mockMediator.Object);
+        var exampleEndpointResponseSender = new ResponseSender<ExampleEndpointRequest, ExampleEndpointResponse>(exampleEndpoint);
+
+        // Act
+        await exampleEndpointResponseSender.SendResponse<ExampleEndpointRequest, ExampleEndpointResponse, string>(result, exampleEndpointMapper.FromEntity);
+
+        // Assert
+        exampleEndpointResponseSender.HttpContext.Response.StatusCode.Should().Be(StatusCodes.Status500InternalServerError);
+    }
+
+    [Test]
     public async Task SendResponse_Should_Be_Status400BadRequest_When_ValidationError()
     {
         // Arrange
