@@ -19,7 +19,7 @@ public class DependencyInjectionExtensionTest
 
         // Act
         var act = serviceCollection.BuildServiceProvider();
-        var actExampleRequestValidatorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(IValidator<>).Name && x.ImplementationType?.Name == typeof(ExampleRequestValidator).Name);
+        var actExampleRequestValidatorServiceDescriptor = serviceCollection.FirstOrDefault(x => x.ServiceType.Name == typeof(IValidator<>).Name && x.ImplementationType?.Name == typeof(ExampleRequestValidator).Name && x.Lifetime == ServiceLifetime.Scoped);
 
         // Assert
         act.Should().BeOfType<ServiceProvider>().And.NotBeNull();
@@ -81,14 +81,16 @@ public class DependencyInjectionExtensionTest
 
         // Act
         var act = serviceCollection.BuildServiceProvider();
-        var actExampleRequestHandlerServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(IRequestHandler<,>).Name && x.ImplementationType?.Name == typeof(ExampleRequestHandler).Name);
-        var actExceptionBehaviorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(IPipelineBehavior<,>).Name && x.ImplementationType?.Name == typeof(ExceptionBehavior<,>).Name);
-        var actLoggingBehaviorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(IPipelineBehavior<,>).Name && x.ImplementationType?.Name == typeof(LoggingBehavior<,>).Name);
-        var actPerformanceBehaviorServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(IPipelineBehavior<,>).Name && x.ImplementationType?.Name == typeof(PerformanceBehavior<,>).Name);
+        var actExampleRequestHandlerServiceDescriptor = serviceCollection.FirstOrDefault(x => x.ServiceType.Name == typeof(IRequestHandler<,>).Name && x.ImplementationType?.Name == typeof(ExampleRequestHandler).Name && x.Lifetime == ServiceLifetime.Transient);
+
+        var actExceptionBehaviorServiceDescriptor = serviceCollection.FirstOrDefault(x => x.ServiceType.Name == typeof(IPipelineBehavior<,>).Name && x.ImplementationType?.Name == typeof(ExceptionBehavior<,>).Name && x.Lifetime == ServiceLifetime.Transient);
+        var actLoggingBehaviorServiceDescriptor = serviceCollection.FirstOrDefault(x => x.ServiceType.Name == typeof(IPipelineBehavior<,>).Name && x.ImplementationType?.Name == typeof(LoggingBehavior<,>).Name && x.Lifetime == ServiceLifetime.Transient);
+        var actPerformanceBehaviorServiceDescriptor = serviceCollection.FirstOrDefault(x => x.ServiceType.Name == typeof(IPipelineBehavior<,>).Name && x.ImplementationType?.Name == typeof(PerformanceBehavior<,>).Name && x.Lifetime == ServiceLifetime.Transient);
 
         // Assert
         act.Should().BeOfType<ServiceProvider>().And.NotBeNull();
         actExampleRequestHandlerServiceDescriptor.Should().BeOfType<ServiceDescriptor>().And.NotBeNull();
+
         actExceptionBehaviorServiceDescriptor.Should().BeOfType<ServiceDescriptor>().And.NotBeNull();
         actLoggingBehaviorServiceDescriptor.Should().BeOfType<ServiceDescriptor>().And.NotBeNull();
         actPerformanceBehaviorServiceDescriptor.Should().BeOfType<ServiceDescriptor>().And.NotBeNull();
