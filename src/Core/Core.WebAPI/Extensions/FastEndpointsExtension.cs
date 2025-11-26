@@ -22,6 +22,7 @@ public static class FastEndpointsExtension
         {
             _ when result.HasError<NotFoundError>() => responseSender.ErrorsAsync(StatusCodes.Status404NotFound, cancellationToken),
             _ when result.HasError<SaveError>() => responseSender.ErrorsAsync(StatusCodes.Status500InternalServerError, cancellationToken),
+            _ when result.HasError<ServiceError>() => responseSender.ErrorsAsync(StatusCodes.Status500InternalServerError, cancellationToken),
             _ when result.HasError<ValidationError>() => responseSender.ValidationErrorsAsync(result, cancellationToken),
 
             _ when result.IsFailed => responseSender.ErrorsAsync(StatusCodes.Status500InternalServerError, cancellationToken),
