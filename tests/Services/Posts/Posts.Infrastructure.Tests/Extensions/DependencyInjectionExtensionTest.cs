@@ -39,8 +39,8 @@ public class DependencyInjectionExtensionTest
 
         // Act
         var act = serviceCollection.BuildServiceProvider();
-        var actPostDbContextServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(PostDbContext).Name && x.ImplementationType?.Name == typeof(PostDbContext).Name);
-        var actPostRepositoryServiceDescriptor = serviceCollection.First(x => x.ServiceType.Name == typeof(IPostRepository).Name && x.ImplementationType?.Name == typeof(PostRepository).Name);
+        var actPostDbContextServiceDescriptor = serviceCollection.FirstOrDefault(x => x.ServiceType.Name == typeof(PostDbContext).Name && x.ImplementationType?.Name == typeof(PostDbContext).Name && x.Lifetime == ServiceLifetime.Scoped);
+        var actPostRepositoryServiceDescriptor = serviceCollection.FirstOrDefault(x => x.ServiceType.Name == typeof(IPostRepository).Name && x.ImplementationType?.Name == typeof(PostRepository).Name && x.Lifetime == ServiceLifetime.Scoped);
 
         // Assert
         act.Should().BeOfType<ServiceProvider>().And.NotBeNull();
