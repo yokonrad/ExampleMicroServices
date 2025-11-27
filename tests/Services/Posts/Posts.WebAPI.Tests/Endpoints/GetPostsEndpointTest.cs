@@ -26,7 +26,7 @@ public class GetPostsEndpointTest
     public async Task Should_Be_Invalid_When_Result_ValidationError()
     {
         // Arrange
-        var postDtos = Array.Empty<PostDto>().AsEnumerable();
+        var postDtos = Enumerable.Empty<PostDto>();
 
         var getPostsMapper = new GetPostsMapper();
         var getPostsResponse = getPostsMapper.FromEntity(postDtos);
@@ -52,7 +52,7 @@ public class GetPostsEndpointTest
     public async Task Should_Be_Valid_When_Result_Empty()
     {
         // Arrange
-        var postDtos = Array.Empty<PostDto>().AsEnumerable();
+        var postDtos = Enumerable.Empty<PostDto>();
 
         var getPostsMapper = new GetPostsMapper();
         var getPostsResponse = getPostsMapper.FromEntity(postDtos);
