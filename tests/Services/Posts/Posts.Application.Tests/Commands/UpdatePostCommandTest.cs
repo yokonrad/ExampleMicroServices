@@ -75,7 +75,10 @@ public class UpdatePostCommandTest
     public async Task Should_Be_Invalid_When_NotFoundError()
     {
         // Arrange
-        var fakerUpdatePostCommand = new AutoFaker<UpdatePostCommand>();
+        var fakerUpdatePostCommand = new AutoFaker<UpdatePostCommand>()
+            .RuleFor(x => x.Title, x => x.Random.String2(3, 25))
+            .RuleFor(x => x.Text, x => x.Random.String2(3, 25));
+
         var updatePostCommand = fakerUpdatePostCommand.Generate();
 
         mockPostRepository.Setup(x => x.GetByGuidAsync(updatePostCommand.Guid, It.IsAny<CancellationToken>())).ReturnsAsync(It.IsAny<Post>());
