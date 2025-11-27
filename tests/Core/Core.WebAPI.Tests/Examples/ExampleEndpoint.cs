@@ -16,11 +16,11 @@ public record ExampleEndpointResponse()
 
 public class ExampleEndpointMapper : ResponseMapper<ExampleEndpointResponse, string>
 {
-    public override ExampleEndpointResponse FromEntity(string value)
+    public override ExampleEndpointResponse FromEntity(string example)
     {
         return new()
         {
-            Example = value,
+            Example = example,
         };
     }
 }
