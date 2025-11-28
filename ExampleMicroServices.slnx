@@ -33,6 +33,9 @@
     <Project Path="tests/Core/Core.WebAPI.Tests/Core.WebAPI.Tests.csproj" />
   </Folder>
   <Folder Name="/tests/Services/" />
+  <Folder Name="/tests/Services/Comments/">
+    <Project Path="tests/Services/Comments/Comments.Core.Tests/Comments.Core.Tests.csproj" />
+  </Folder>
   <Folder Name="/tests/Services/Posts/">
     <Project Path="tests/Services/Posts/Posts.Application.Tests/Posts.Application.Tests.csproj" />
     <Project Path="tests/Services/Posts/Posts.Domain.Tests/Posts.Domain.Tests.csproj" />

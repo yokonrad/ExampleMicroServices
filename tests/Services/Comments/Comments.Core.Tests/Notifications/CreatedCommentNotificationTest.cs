@@ -1,0 +1,24 @@
+﻿using Comments.Core.Dtos;
+using Comments.Core.Notifications;
+using Microsoft.Extensions.Logging;
+using Moq;
+
+namespace Comments.Core.Tests.Notifications;
+
+public class CreatedCommentNotificationTest
+{
+    [Test]
+    public async Task Verify_LogInformation_Once()
+    {
+        // Arrange
+        var mockLogger = new Mock<ILogger<CreatedCommentNotificationHandler>>();
+        var createdCommentNotificationHandler = new CreatedCommentNotificationHandler(mockLogger.Object);
+        var createdCommentNotification = new CreatedCommentNotification(It.IsAny<CommentDto>());
+
+        // Act
+        await createdCommentNotificationHandler.Handle(createdCommentNotification, It.IsAny<CancellationToken>());
+
+        // Assert
+        mockLogger.Verify(x => x.Log(LogLevel.Information, It.IsAny<EventId>(), It.IsAny<It.IsAnyType>(), It.IsAny<Exception?>(), It.IsAny<Func<It.IsAnyType, Exception?, string>>()), Times.Once());
+    }
+}
