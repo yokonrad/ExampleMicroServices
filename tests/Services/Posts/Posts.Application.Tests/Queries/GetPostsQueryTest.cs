@@ -76,7 +76,6 @@ public class GetPostsQueryTest
         var fakerGetPostsQuery = new AutoFaker<GetPostsQuery>();
         var getPostsQuery = fakerGetPostsQuery.Generate();
 
-        mockValidator.Setup(x => x.Validate(getPostsQuery)).Returns(new ValidationResult());
         mockPostRepository.Setup(x => x.GetAsync(It.IsAny<CancellationToken>())).ReturnsAsync(posts);
 
         var getPostsQueryHandler = new GetPostsQueryHandler(mapper, mockValidator.Object, mockPostRepository.Object);
@@ -100,7 +99,6 @@ public class GetPostsQueryTest
         var fakerGetPostsQuery = new AutoFaker<GetPostsQuery>();
         var getPostsQuery = fakerGetPostsQuery.Generate();
 
-        mockValidator.Setup(x => x.Validate(getPostsQuery)).Returns(new ValidationResult());
         mockPostRepository.Setup(x => x.GetAsync(It.IsAny<CancellationToken>())).ReturnsAsync(posts);
 
         var getPostsQueryHandler = new GetPostsQueryHandler(mapper, mockValidator.Object, mockPostRepository.Object);
