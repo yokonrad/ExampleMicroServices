@@ -16,6 +16,7 @@
   </Folder>
   <Folder Name="/src/Services/" />
   <Folder Name="/src/Services/Comments/">
+    <Project Path="src/Services/Comments/Comments.Core/Comments.Core.csproj" />
     <Project Path="src/Services/Comments/Comments.WebAPI/Comments.WebAPI.csproj" />
   </Folder>
   <Folder Name="/src/Services/Posts/">
