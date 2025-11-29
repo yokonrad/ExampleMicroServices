@@ -1,4 +1,6 @@
-using Core.WebAPI.Extensions;
+using Comments.Core.Extensions;
+using Comments.WebAPI.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Comments.WebAPI;
 
@@ -8,13 +10,17 @@ public static class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.AddHealthChecksSupport();
-        builder.AddFastEndpointsSupport("Comments API");
+        builder.Services.AddCommentsCoreSupport(x =>
+        {
+            if (builder.Environment.IsDevelopment()) x.UseInMemoryDatabase("DbConnection");
+            else x.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection"));
+        });
+        builder.AddCommentsWebAPISupport();
 
         var app = builder.Build();
 
-        app.AddHealthChecksSupport();
-        app.AddFastEndpointsSupport();
+        app.Services.AddCommentsCoreSupport();
+        app.AddCommentsWebAPISupport();
 
         await app.RunAsync();
     }
