@@ -13,7 +13,6 @@ HEALTHCHECK --interval=30s --timeout=30s --start-period=10s --retries=3 CMD curl
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["./Core/Core.WebAPI/Core.WebAPI.csproj", "Core/Core.WebAPI/"]
 COPY ["./Services/Comments/Comments.WebAPI/Comments.WebAPI.csproj", "Services/Comments/Comments.WebAPI/"]
 RUN dotnet restore "./Services/Comments/Comments.WebAPI/Comments.WebAPI.csproj"
 COPY . .
