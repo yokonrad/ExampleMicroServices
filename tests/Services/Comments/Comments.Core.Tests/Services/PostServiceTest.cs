@@ -44,7 +44,7 @@ public class PostServiceTest
     {
         // Arrange
         var mockHttpMessageHandler = new MockHttpMessageHandler();
-        mockHttpMessageHandler.When($"http://localhost:5001/api/v1/{It.IsAny<Guid>()}").Respond(HttpStatusCode.NotFound);
+        mockHttpMessageHandler.When($"http://localhost:5001/api/v1/posts/{It.IsAny<Guid>()}").Respond(HttpStatusCode.NotFound);
 
         mockHttpClientFactory.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(new HttpClient(mockHttpMessageHandler));
         mockConfiguration.SetupGet(x => x["Services:Posts"]).Returns("http://localhost:5001");
@@ -66,7 +66,7 @@ public class PostServiceTest
         var postDto = fakerPostDto.Generate();
 
         var mockHttpMessageHandler = new MockHttpMessageHandler();
-        mockHttpMessageHandler.When($"http://localhost:5001/api/v1/{postDto.Guid}").Respond("application/json", JsonConvert.SerializeObject(postDto));
+        mockHttpMessageHandler.When($"http://localhost:5001/api/v1/posts/{postDto.Guid}").Respond("application/json", JsonConvert.SerializeObject(postDto));
 
         mockHttpClientFactory.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(new HttpClient(mockHttpMessageHandler));
         mockConfiguration.SetupGet(x => x["Services:Posts"]).Returns("http://localhost:5001");
