@@ -17,8 +17,8 @@ public static class DependencyInjectionExtension
             .AddJsonFile($"{OcelotConfigurationPath}/ocelot.swagger.json", false, true)
             .AddEnvironmentVariables();
 
-        webApplicationBuilder.Services.AddOcelot(webApplicationBuilder.Configuration).AddAppConfiguration();
         webApplicationBuilder.Services.AddSwaggerForOcelot(webApplicationBuilder.Configuration);
+        webApplicationBuilder.Services.AddOcelot(webApplicationBuilder.Configuration).AddAppConfiguration();
 
         return webApplicationBuilder;
     }
