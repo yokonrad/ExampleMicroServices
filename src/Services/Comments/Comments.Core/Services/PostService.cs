@@ -9,7 +9,7 @@ public class PostService(IHttpClientFactory httpClientFactory, IConfiguration co
 {
     public async Task<PostDto?> GetByGuidAsync(Guid guid, CancellationToken cancellationToken = default)
     {
-        var httpResponseMessage = await httpClientFactory.CreateClient().GetAsync($"{configuration["Services:Posts"]}/api/v1/{guid}", cancellationToken);
+        var httpResponseMessage = await httpClientFactory.CreateClient().GetAsync($"{configuration["Services:Posts"]}/api/v1/posts/{guid}", cancellationToken);
 
         if (!httpResponseMessage.IsSuccessStatusCode) return null;
 
