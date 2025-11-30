@@ -26,13 +26,9 @@ public class GetPostByGuidEndpointTest
     public async Task Should_Be_Invalid_When_Result_ValidationError()
     {
         // Arrange
-        var fakerPostDto = new AutoFaker<PostDto>();
-        var postDto = fakerPostDto.Generate();
-
-        var fakerGetPostByGuidRequest = new AutoFaker<GetPostByGuidRequest>()
-            .RuleFor(x => x.Guid, _ => postDto.Guid);
-
-        var getPostByGuidRequest = fakerGetPostByGuidRequest.Generate();
+        var getPostByGuidRequest = new AutoFaker<GetPostByGuidRequest>()
+            .RuleFor(x => x.Guid, _ => It.IsAny<Guid>())
+            .Generate();
 
         var result = Result.Fail([new ValidationError("Property name", "Error message")]);
 
@@ -52,13 +48,8 @@ public class GetPostByGuidEndpointTest
     public async Task Should_Be_Invalid_When_Result_NotFoundError()
     {
         // Arrange
-        var fakerPostDto = new AutoFaker<PostDto>();
-        var postDto = fakerPostDto.Generate();
-
-        var fakerGetPostByGuidRequest = new AutoFaker<GetPostByGuidRequest>()
-            .RuleFor(x => x.Guid, _ => postDto.Guid);
-
-        var getPostByGuidRequest = fakerGetPostByGuidRequest.Generate();
+        var getPostByGuidRequest = new AutoFaker<GetPostByGuidRequest>()
+            .Generate();
 
         var result = Result.Fail(new NotFoundError());
 
@@ -78,16 +69,15 @@ public class GetPostByGuidEndpointTest
     public async Task Should_Be_Valid()
     {
         // Arrange
-        var fakerPostDto = new AutoFaker<PostDto>();
-        var postDto = fakerPostDto.Generate();
+        var postDto = new AutoFaker<PostDto>()
+            .Generate();
 
-        var fakerGetPostByGuidRequest = new AutoFaker<GetPostByGuidRequest>()
-            .RuleFor(x => x.Guid, _ => postDto.Guid);
+        var getPostByGuidRequest = new AutoFaker<GetPostByGuidRequest>()
+            .RuleFor(x => x.Guid, _ => postDto.Guid)
+            .Generate();
 
-        var getPostByGuidRequest = fakerGetPostByGuidRequest.Generate();
-
-        var getPostByGuidMapper = new GetPostByGuidMapper();
-        var getPostByGuidResponse = getPostByGuidMapper.FromEntity(postDto);
+        var getPostByGuidResponse = new GetPostByGuidMapper()
+            .FromEntity(postDto);
 
         var result = Result.Ok(postDto);
 
@@ -98,11 +88,9 @@ public class GetPostByGuidEndpointTest
         // Act
         await getPostByGuidEndpoint.HandleAsync(getPostByGuidRequest, It.IsAny<CancellationToken>());
 
-        var getPostByGuidEndpointResponse = getPostByGuidEndpoint.Response;
-
         // Assert
         getPostByGuidEndpoint.HttpContext.Response.StatusCode.Should().Be(StatusCodes.Status200OK);
         getPostByGuidEndpoint.ValidationFailed.Should().BeFalse();
-        getPostByGuidEndpointResponse.Should().BeAssignableTo<GetPostByGuidResponse>().And.BeEquivalentTo(getPostByGuidResponse).And.NotBeNull();
+        getPostByGuidEndpoint.Response.Should().BeAssignableTo<GetPostByGuidResponse>().And.BeEquivalentTo(getPostByGuidResponse).And.NotBeNull();
     }
 }

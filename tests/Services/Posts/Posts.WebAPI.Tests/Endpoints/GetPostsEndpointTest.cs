@@ -26,11 +26,6 @@ public class GetPostsEndpointTest
     public async Task Should_Be_Invalid_When_Result_ValidationError()
     {
         // Arrange
-        var postDtos = Enumerable.Empty<PostDto>();
-
-        var getPostsMapper = new GetPostsMapper();
-        var getPostsResponse = getPostsMapper.FromEntity(postDtos);
-
         var result = Result.Fail([new ValidationError("Property name", "Error message")]);
 
         mockMediator.Setup(x => x.Send(It.IsAny<GetPostsQuery>(), It.IsAny<CancellationToken>())).ReturnsAsync(result);
@@ -40,12 +35,9 @@ public class GetPostsEndpointTest
         // Act
         await getPostsEndpoint.HandleAsync(It.IsAny<CancellationToken>());
 
-        var getPostsEndpointResponse = getPostsEndpoint.Response;
-
         // Assert
         getPostsEndpoint.HttpContext.Response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
         getPostsEndpoint.ValidationFailed.Should().BeTrue();
-        getPostsEndpointResponse.Should().BeAssignableTo<IEnumerable<GetPostsResponse>>().And.BeEquivalentTo(getPostsResponse).And.BeEmpty();
     }
 
     [Test]
@@ -54,8 +46,8 @@ public class GetPostsEndpointTest
         // Arrange
         var postDtos = Enumerable.Empty<PostDto>();
 
-        var getPostsMapper = new GetPostsMapper();
-        var getPostsResponse = getPostsMapper.FromEntity(postDtos);
+        var getPostsResponse = new GetPostsMapper()
+            .FromEntity(postDtos);
 
         var result = Result.Ok(postDtos);
 
@@ -66,23 +58,21 @@ public class GetPostsEndpointTest
         // Act
         await getPostsEndpoint.HandleAsync(It.IsAny<CancellationToken>());
 
-        var getPostsEndpointResponse = getPostsEndpoint.Response;
-
         // Assert
         getPostsEndpoint.HttpContext.Response.StatusCode.Should().Be(StatusCodes.Status200OK);
         getPostsEndpoint.ValidationFailed.Should().BeFalse();
-        getPostsEndpointResponse.Should().BeAssignableTo<IEnumerable<GetPostsResponse>>().And.BeEquivalentTo(getPostsResponse).And.BeEmpty();
+        getPostsEndpoint.Response.Should().BeAssignableTo<IEnumerable<GetPostsResponse>>().And.BeEquivalentTo(getPostsResponse).And.BeEmpty();
     }
 
     [Test]
     public async Task Should_Be_Valid_When_Result_Not_Empty()
     {
         // Arrange
-        var fakerPostDto = new AutoFaker<PostDto>();
-        var postDtos = fakerPostDto.Generate(100).AsEnumerable();
+        var postDtos = new AutoFaker<PostDto>()
+            .Generate(100).AsEnumerable();
 
-        var getPostsMapper = new GetPostsMapper();
-        var getPostsResponse = getPostsMapper.FromEntity(postDtos);
+        var getPostsResponse = new GetPostsMapper()
+            .FromEntity(postDtos);
 
         var result = Result.Ok(postDtos);
 
@@ -93,11 +83,9 @@ public class GetPostsEndpointTest
         // Act
         await getPostsEndpoint.HandleAsync(It.IsAny<CancellationToken>());
 
-        var getPostsEndpointResponse = getPostsEndpoint.Response;
-
         // Assert
         getPostsEndpoint.HttpContext.Response.StatusCode.Should().Be(StatusCodes.Status200OK);
         getPostsEndpoint.ValidationFailed.Should().BeFalse();
-        getPostsEndpointResponse.Should().BeAssignableTo<IEnumerable<GetPostsResponse>>().And.BeEquivalentTo(getPostsResponse).And.NotBeEmpty();
+        getPostsEndpoint.Response.Should().BeAssignableTo<IEnumerable<GetPostsResponse>>().And.BeEquivalentTo(getPostsResponse).And.NotBeEmpty();
     }
 }

@@ -26,13 +26,12 @@ public class PutPostEndpointTest
     public async Task Should_Be_Invalid_When_Result_ValidationError()
     {
         // Arrange
-        var fakerPutPostRequest = new AutoFaker<PutPostRequest>()
+        var putPostRequest = new AutoFaker<PutPostRequest>()
             .RuleFor(x => x.Guid, _ => It.IsAny<Guid>())
             .RuleFor(x => x.Title, _ => It.IsAny<string>())
             .RuleFor(x => x.Text, _ => It.IsAny<string>())
-            .RuleFor(x => x.Visible, _ => It.IsAny<bool>());
-
-        var putPostRequest = fakerPutPostRequest.Generate();
+            .RuleFor(x => x.Visible, _ => It.IsAny<bool>())
+            .Generate();
 
         var result = Result.Fail([new ValidationError("Property name", "Error message")]);
 
@@ -52,13 +51,8 @@ public class PutPostEndpointTest
     public async Task Should_Be_Invalid_When_Result_NotFoundError()
     {
         // Arrange
-        var fakerPostDto = new AutoFaker<PostDto>();
-        var postDto = fakerPostDto.Generate();
-
-        var fakerPutPostRequest = new AutoFaker<PutPostRequest>()
-            .RuleFor(x => x.Guid, _ => postDto.Guid);
-
-        var putPostRequest = fakerPutPostRequest.Generate();
+        var putPostRequest = new AutoFaker<PutPostRequest>()
+            .Generate();
 
         var result = Result.Fail(new NotFoundError());
 
@@ -78,15 +72,8 @@ public class PutPostEndpointTest
     public async Task Should_Be_Invalid_When_Result_SaveError()
     {
         // Arrange
-        var fakerPostDto = new AutoFaker<PostDto>();
-        var postDto = fakerPostDto.Generate();
-
-        var fakerPutPostRequest = new AutoFaker<PutPostRequest>()
-            .RuleFor(x => x.Title, _ => postDto.Title)
-            .RuleFor(x => x.Text, _ => postDto.Text)
-            .RuleFor(x => x.Visible, _ => postDto.Visible);
-
-        var putPostRequest = fakerPutPostRequest.Generate();
+        var putPostRequest = new AutoFaker<PutPostRequest>()
+            .Generate();
 
         var result = Result.Fail(new SaveError());
 
@@ -106,18 +93,17 @@ public class PutPostEndpointTest
     public async Task Should_Be_Valid()
     {
         // Arrange
-        var fakerPostDto = new AutoFaker<PostDto>();
-        var postDto = fakerPostDto.Generate();
+        var postDto = new AutoFaker<PostDto>()
+            .Generate();
 
-        var fakerPutPostRequest = new AutoFaker<PutPostRequest>()
+        var putPostRequest = new AutoFaker<PutPostRequest>()
             .RuleFor(x => x.Title, _ => postDto.Title)
             .RuleFor(x => x.Text, _ => postDto.Text)
-            .RuleFor(x => x.Visible, _ => postDto.Visible);
+            .RuleFor(x => x.Visible, _ => postDto.Visible)
+            .Generate();
 
-        var putPostRequest = fakerPutPostRequest.Generate();
-
-        var putPostMapper = new PutPostMapper();
-        var putPostResponse = putPostMapper.FromEntity(postDto);
+        var putPostResponse = new PutPostMapper()
+            .FromEntity(postDto);
 
         var result = Result.Ok(postDto);
 
@@ -128,11 +114,9 @@ public class PutPostEndpointTest
         // Act
         await putPostEndpoint.HandleAsync(putPostRequest, It.IsAny<CancellationToken>());
 
-        var putPostEndpointResponse = putPostEndpoint.Response;
-
         // Assert
         putPostEndpoint.HttpContext.Response.StatusCode.Should().Be(StatusCodes.Status200OK);
         putPostEndpoint.ValidationFailed.Should().BeFalse();
-        putPostEndpointResponse.Should().BeAssignableTo<PutPostResponse>().And.BeEquivalentTo(putPostResponse).And.NotBeNull();
+        putPostEndpoint.Response.Should().BeAssignableTo<PutPostResponse>().And.BeEquivalentTo(putPostResponse).And.NotBeNull();
     }
 }

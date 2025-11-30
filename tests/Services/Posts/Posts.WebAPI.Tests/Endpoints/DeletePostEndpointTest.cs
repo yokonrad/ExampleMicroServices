@@ -26,13 +26,9 @@ public class DeletePostEndpointTest
     public async Task Should_Be_Invalid_When_Result_ValidationError()
     {
         // Arrange
-        var fakerPostDto = new AutoFaker<PostDto>();
-        var postDto = fakerPostDto.Generate();
-
-        var fakerDeletePostRequest = new AutoFaker<DeletePostRequest>()
-            .RuleFor(x => x.Guid, _ => postDto.Guid);
-
-        var deletePostRequest = fakerDeletePostRequest.Generate();
+        var deletePostRequest = new AutoFaker<DeletePostRequest>()
+            .RuleFor(x => x.Guid, _ => It.IsAny<Guid>())
+            .Generate();
 
         var result = Result.Fail([new ValidationError("Property name", "Error message")]);
 
@@ -52,13 +48,8 @@ public class DeletePostEndpointTest
     public async Task Should_Be_Invalid_When_Result_NotFoundError()
     {
         // Arrange
-        var fakerPostDto = new AutoFaker<PostDto>();
-        var postDto = fakerPostDto.Generate();
-
-        var fakerDeletePostRequest = new AutoFaker<DeletePostRequest>()
-            .RuleFor(x => x.Guid, _ => postDto.Guid);
-
-        var deletePostRequest = fakerDeletePostRequest.Generate();
+        var deletePostRequest = new AutoFaker<DeletePostRequest>()
+            .Generate();
 
         var result = Result.Fail(new NotFoundError());
 
@@ -78,13 +69,8 @@ public class DeletePostEndpointTest
     public async Task Should_Be_Invalid_When_Result_SaveError()
     {
         // Arrange
-        var fakerPostDto = new AutoFaker<PostDto>();
-        var postDto = fakerPostDto.Generate();
-
-        var fakerDeletePostRequest = new AutoFaker<DeletePostRequest>()
-            .RuleFor(x => x.Guid, _ => postDto.Guid);
-
-        var deletePostRequest = fakerDeletePostRequest.Generate();
+        var deletePostRequest = new AutoFaker<DeletePostRequest>()
+            .Generate();
 
         var result = Result.Fail(new SaveError());
 
@@ -104,16 +90,15 @@ public class DeletePostEndpointTest
     public async Task Should_Be_Valid()
     {
         // Arrange
-        var fakerPostDto = new AutoFaker<PostDto>();
-        var postDto = fakerPostDto.Generate();
+        var postDto = new AutoFaker<PostDto>()
+            .Generate();
 
-        var fakerDeletePostRequest = new AutoFaker<DeletePostRequest>()
-            .RuleFor(x => x.Guid, _ => postDto.Guid);
+        var deletePostRequest = new AutoFaker<DeletePostRequest>()
+            .RuleFor(x => x.Guid, _ => postDto.Guid)
+            .Generate();
 
-        var deletePostRequest = fakerDeletePostRequest.Generate();
-
-        var deletePostMapper = new DeletePostMapper();
-        var deletePostResponse = deletePostMapper.FromEntity(postDto);
+        var deletePostResponse = new DeletePostMapper()
+            .FromEntity(postDto);
 
         var result = Result.Ok(postDto);
 
@@ -124,11 +109,9 @@ public class DeletePostEndpointTest
         // Act
         await deletePostEndpoint.HandleAsync(deletePostRequest, It.IsAny<CancellationToken>());
 
-        var deletePostEndpointResponse = deletePostEndpoint.Response;
-
         // Assert
         deletePostEndpoint.HttpContext.Response.StatusCode.Should().Be(StatusCodes.Status200OK);
         deletePostEndpoint.ValidationFailed.Should().BeFalse();
-        deletePostEndpointResponse.Should().BeAssignableTo<DeletePostResponse>().And.BeEquivalentTo(deletePostResponse).And.NotBeNull();
+        deletePostEndpoint.Response.Should().BeAssignableTo<DeletePostResponse>().And.BeEquivalentTo(deletePostResponse).And.NotBeNull();
     }
 }

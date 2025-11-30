@@ -26,13 +26,12 @@ public class PatchPostEndpointTest
     public async Task Should_Be_Invalid_When_Result_ValidationError()
     {
         // Arrange
-        var fakerPatchPostRequest = new AutoFaker<PatchPostRequest>()
+        var patchPostRequest = new AutoFaker<PatchPostRequest>()
             .RuleFor(x => x.Guid, _ => It.IsAny<Guid>())
             .RuleFor(x => x.Title, _ => It.IsAny<string>())
             .RuleFor(x => x.Text, _ => It.IsAny<string>())
-            .RuleFor(x => x.Visible, _ => It.IsAny<bool>());
-
-        var patchPostRequest = fakerPatchPostRequest.Generate();
+            .RuleFor(x => x.Visible, _ => It.IsAny<bool>())
+            .Generate();
 
         var result = Result.Fail([new ValidationError("Property name", "Error message")]);
 
@@ -52,13 +51,8 @@ public class PatchPostEndpointTest
     public async Task Should_Be_Invalid_When_Result_NotFoundError()
     {
         // Arrange
-        var fakerPostDto = new AutoFaker<PostDto>();
-        var postDto = fakerPostDto.Generate();
-
-        var fakerPatchPostRequest = new AutoFaker<PatchPostRequest>()
-            .RuleFor(x => x.Guid, _ => postDto.Guid);
-
-        var patchPostRequest = fakerPatchPostRequest.Generate();
+        var patchPostRequest = new AutoFaker<PatchPostRequest>()
+            .Generate();
 
         var result = Result.Fail(new NotFoundError());
 
@@ -78,15 +72,8 @@ public class PatchPostEndpointTest
     public async Task Should_Be_Invalid_When_Result_SaveError()
     {
         // Arrange
-        var fakerPostDto = new AutoFaker<PostDto>();
-        var postDto = fakerPostDto.Generate();
-
-        var fakerPatchPostRequest = new AutoFaker<PatchPostRequest>()
-            .RuleFor(x => x.Title, _ => postDto.Title)
-            .RuleFor(x => x.Text, _ => postDto.Text)
-            .RuleFor(x => x.Visible, _ => postDto.Visible);
-
-        var patchPostRequest = fakerPatchPostRequest.Generate();
+        var patchPostRequest = new AutoFaker<PatchPostRequest>()
+            .Generate();
 
         var result = Result.Fail(new SaveError());
 
@@ -106,18 +93,17 @@ public class PatchPostEndpointTest
     public async Task Should_Be_Valid()
     {
         // Arrange
-        var fakerPostDto = new AutoFaker<PostDto>();
-        var postDto = fakerPostDto.Generate();
+        var postDto = new AutoFaker<PostDto>()
+            .Generate();
 
-        var fakerPatchPostRequest = new AutoFaker<PatchPostRequest>()
+        var patchPostRequest = new AutoFaker<PatchPostRequest>()
             .RuleFor(x => x.Title, _ => postDto.Title)
             .RuleFor(x => x.Text, _ => postDto.Text)
-            .RuleFor(x => x.Visible, _ => postDto.Visible);
+            .RuleFor(x => x.Visible, _ => postDto.Visible)
+            .Generate();
 
-        var patchPostRequest = fakerPatchPostRequest.Generate();
-
-        var patchPostMapper = new PatchPostMapper();
-        var patchPostResponse = patchPostMapper.FromEntity(postDto);
+        var patchPostResponse = new PatchPostMapper()
+            .FromEntity(postDto);
 
         var result = Result.Ok(postDto);
 
@@ -128,11 +114,9 @@ public class PatchPostEndpointTest
         // Act
         await patchPostEndpoint.HandleAsync(patchPostRequest, It.IsAny<CancellationToken>());
 
-        var patchPostEndpointResponse = patchPostEndpoint.Response;
-
         // Assert
         patchPostEndpoint.HttpContext.Response.StatusCode.Should().Be(StatusCodes.Status200OK);
         patchPostEndpoint.ValidationFailed.Should().BeFalse();
-        patchPostEndpointResponse.Should().BeAssignableTo<PatchPostResponse>().And.BeEquivalentTo(patchPostResponse).And.NotBeNull();
+        patchPostEndpoint.Response.Should().BeAssignableTo<PatchPostResponse>().And.BeEquivalentTo(patchPostResponse).And.NotBeNull();
     }
 }
