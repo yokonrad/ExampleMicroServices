@@ -70,8 +70,8 @@ public class PostRepositoryTest
     public async Task GetAsync_Should_Be_Valid_When_Not_Empty()
     {
         // Arrange
-        var fakerPost = new AutoFaker<Post>();
-        var posts = fakerPost.Generate(100);
+        var posts = new AutoFaker<Post>()
+            .Generate(100);
 
         postDbContext.Posts.AddRange(posts);
         await postDbContext.SaveChangesAsync(It.IsAny<CancellationToken>());
@@ -100,7 +100,7 @@ public class PostRepositoryTest
     [Test]
     public async Task GetByGuidAsync_Should_Be_Invalid()
     {
-        // Act
+        // Arrange & Act
         var act = await postRepository.GetByGuidAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>());
 
         // Assert
@@ -111,8 +111,8 @@ public class PostRepositoryTest
     public async Task GetByGuidAsync_Should_Be_Valid()
     {
         // Arrange
-        var fakerPost = new AutoFaker<Post>();
-        var post = fakerPost.Generate();
+        var post = new AutoFaker<Post>()
+            .Generate();
 
         postDbContext.Posts.Add(post);
         await postDbContext.SaveChangesAsync(It.IsAny<CancellationToken>());
@@ -127,7 +127,7 @@ public class PostRepositoryTest
     [Test]
     public async Task CreateAsync_Should_Throw_NullReferenceException_When_Any_Post()
     {
-        // Act
+        // Arrange & Act
         var act = () => postRepository.CreateAsync(It.IsAny<Post>(), It.IsAny<CancellationToken>());
 
         // Assert
@@ -138,8 +138,8 @@ public class PostRepositoryTest
     public async Task CreateAsync_Should_Throw_OperationCanceledException_When_Cancelled()
     {
         // Arrange
-        var fakerPost = new AutoFaker<Post>();
-        var post = fakerPost.Generate();
+        var post = new AutoFaker<Post>()
+            .Generate();
 
         using var cancellationTokenSource = new CancellationTokenSource();
         await cancellationTokenSource.CancelAsync();
@@ -155,8 +155,8 @@ public class PostRepositoryTest
     public async Task CreateAsync_Should_Be_Valid()
     {
         // Arrange
-        var fakerPost = new AutoFaker<Post>();
-        var post = fakerPost.Generate();
+        var post = new AutoFaker<Post>()
+            .Generate();
 
         // Act
         var act = await postRepository.CreateAsync(post, It.IsAny<CancellationToken>());
@@ -168,7 +168,7 @@ public class PostRepositoryTest
     [Test]
     public async Task UpdateAsync_Should_Throw_NullReferenceException_When_Any_Post()
     {
-        // Act
+        // Arrange & Act
         var act = () => postRepository.UpdateAsync(It.IsAny<Post>(), It.IsAny<CancellationToken>());
 
         // Assert
@@ -179,8 +179,8 @@ public class PostRepositoryTest
     public async Task UpdateAsync_Should_Throw_OperationCanceledException_When_Cancelled()
     {
         // Arrange
-        var fakerPost = new AutoFaker<Post>();
-        var post = fakerPost.Generate();
+        var post = new AutoFaker<Post>()
+            .Generate();
 
         using var cancellationTokenSource = new CancellationTokenSource();
         await cancellationTokenSource.CancelAsync();
@@ -196,8 +196,8 @@ public class PostRepositoryTest
     public async Task UpdateAsync_Should_Be_Valid()
     {
         // Arrange
-        var fakerPost = new AutoFaker<Post>();
-        var post = fakerPost.Generate();
+        var post = new AutoFaker<Post>()
+            .Generate();
 
         postDbContext.Posts.Add(post);
         await postDbContext.SaveChangesAsync(It.IsAny<CancellationToken>());
@@ -212,7 +212,7 @@ public class PostRepositoryTest
     [Test]
     public async Task DeleteAsync_Should_Throw_ArgumentNullException_When_Any_Post()
     {
-        // Act
+        // Arrange & Act
         var act = () => postRepository.DeleteAsync(It.IsAny<Post>(), It.IsAny<CancellationToken>());
 
         // Assert
@@ -223,8 +223,8 @@ public class PostRepositoryTest
     public async Task DeleteAsync_Should_Throw_OperationCanceledException_When_Cancelled()
     {
         // Arrange
-        var fakerPost = new AutoFaker<Post>();
-        var post = fakerPost.Generate();
+        var post = new AutoFaker<Post>()
+            .Generate();
 
         using var cancellationTokenSource = new CancellationTokenSource();
         await cancellationTokenSource.CancelAsync();
@@ -240,8 +240,8 @@ public class PostRepositoryTest
     public async Task DeleteAsync_Should_Be_Valid()
     {
         // Arrange
-        var fakerPost = new AutoFaker<Post>();
-        var post = fakerPost.Generate();
+        var post = new AutoFaker<Post>()
+            .Generate();
 
         postDbContext.Posts.Add(post);
         await postDbContext.SaveChangesAsync(It.IsAny<CancellationToken>());
