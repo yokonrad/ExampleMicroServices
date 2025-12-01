@@ -127,8 +127,8 @@ public class FastEndpointsExtensionTest
     public async Task SendResponse_Should_Be_Status200OK()
     {
         // Arrange
-        var fakerExampleRequest = new AutoFaker<ExampleRequest>();
-        var exampleRequest = fakerExampleRequest.Generate();
+        var exampleRequest = new AutoFaker<ExampleRequest>()
+            .Generate();
 
         var exampleRequestHandler = new ExampleRequestHandler();
         var exampleRequestHandlerResult = await exampleRequestHandler.Handle(exampleRequest, It.IsAny<CancellationToken>());
