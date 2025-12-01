@@ -25,10 +25,9 @@ public class ExceptionBehaviorTest
     public async Task Should_Be_Invalid_Verify_LogError_Once()
     {
         // Arrange
-        var fakerExampleRequest = new AutoFaker<ExampleRequest>()
-            .RuleFor(x => x.Example, _ => It.IsAny<string>());
-
-        var exampleRequest = fakerExampleRequest.Generate();
+        var exampleRequest = new AutoFaker<ExampleRequest>()
+            .RuleFor(x => x.Example, _ => It.IsAny<string>())
+            .Generate();
 
         // Act
         var act = await exceptionBehavior.Handle(exampleRequest, (x) => exampleRequestHandler.Handle(exampleRequest, x), It.IsAny<CancellationToken>());
@@ -42,8 +41,8 @@ public class ExceptionBehaviorTest
     public async Task Should_Be_Valid_Verify_LogInformation_Exactly_Two_LogError_Never()
     {
         // Arrange
-        var fakerExampleRequest = new AutoFaker<ExampleRequest>();
-        var exampleRequest = fakerExampleRequest.Generate();
+        var exampleRequest = new AutoFaker<ExampleRequest>()
+            .Generate();
 
         // Act
         var act = await exceptionBehavior.Handle(exampleRequest, (x) => exampleRequestHandler.Handle(exampleRequest, x), It.IsAny<CancellationToken>());

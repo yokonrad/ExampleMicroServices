@@ -25,8 +25,8 @@ public class LoggingBehaviorTest
     public async Task Should_Be_Valid_Verify_LogInformation_Exactly_Two()
     {
         // Arrange
-        var fakerExampleRequest = new AutoFaker<ExampleRequest>();
-        var exampleRequest = fakerExampleRequest.Generate();
+        var exampleRequest = new AutoFaker<ExampleRequest>()
+            .Generate();
 
         // Act
         var act = await loggingBehavior.Handle(exampleRequest, (x) => exampleRequestHandler.Handle(exampleRequest, x), It.IsAny<CancellationToken>());
