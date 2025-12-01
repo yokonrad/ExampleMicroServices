@@ -46,10 +46,9 @@ public class GetPostByGuidQueryTest
     public async Task Should_Be_Invalid_When_ValidationError()
     {
         // Arrange
-        var fakerGetPostByGuidQuery = new AutoFaker<GetPostByGuidQuery>()
-            .RuleFor(x => x.Guid, _ => It.IsAny<Guid>());
-
-        var getPostByGuidQuery = fakerGetPostByGuidQuery.Generate();
+        var getPostByGuidQuery = new AutoFaker<GetPostByGuidQuery>()
+            .RuleFor(x => x.Guid, _ => It.IsAny<Guid>())
+            .Generate();
 
         var validationResult = validator.Validate(getPostByGuidQuery);
         var validationResultErrors = validationResult.GetValidationErrors();
@@ -69,8 +68,8 @@ public class GetPostByGuidQueryTest
     public async Task Should_Be_Invalid_When_NotFoundError()
     {
         // Arrange
-        var fakerGetPostByGuidQuery = new AutoFaker<GetPostByGuidQuery>();
-        var getPostByGuidQuery = fakerGetPostByGuidQuery.Generate();
+        var getPostByGuidQuery = new AutoFaker<GetPostByGuidQuery>()
+            .Generate();
 
         mockPostRepository.Setup(x => x.GetByGuidAsync(getPostByGuidQuery.Guid, It.IsAny<CancellationToken>())).ReturnsAsync(It.IsAny<Post>());
 
@@ -89,14 +88,14 @@ public class GetPostByGuidQueryTest
     public async Task Should_Be_Valid()
     {
         // Arrange
-        var fakerPost = new AutoFaker<Post>();
-        var post = fakerPost.Generate();
+        var getPostByGuidQuery = new AutoFaker<GetPostByGuidQuery>()
+            .Generate();
+
+        var post = new AutoFaker<Post>()
+            .RuleFor(x => x.Guid, _ => getPostByGuidQuery.Guid)
+            .Generate();
+
         var postDto = mapper.Map<Post, PostDto>(post);
-
-        var fakerGetPostByGuidQuery = new AutoFaker<GetPostByGuidQuery>()
-            .RuleFor(x => x.Guid, _ => post.Guid);
-
-        var getPostByGuidQuery = fakerGetPostByGuidQuery.Generate();
 
         mockPostRepository.Setup(x => x.GetByGuidAsync(getPostByGuidQuery.Guid, It.IsAny<CancellationToken>())).ReturnsAsync(post);
 

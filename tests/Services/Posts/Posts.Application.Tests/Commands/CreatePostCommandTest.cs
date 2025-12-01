@@ -49,12 +49,11 @@ public class CreatePostCommandTest
     public async Task Should_Be_Invalid_When_ValidationError()
     {
         // Arrange
-        var fakerCreatePostCommand = new AutoFaker<CreatePostCommand>()
+        var createPostCommand = new AutoFaker<CreatePostCommand>()
             .RuleFor(x => x.Title, _ => It.IsAny<string>())
             .RuleFor(x => x.Text, _ => It.IsAny<string>())
-            .RuleFor(x => x.Visible, _ => It.IsAny<bool>());
-
-        var createPostCommand = fakerCreatePostCommand.Generate();
+            .RuleFor(x => x.Visible, _ => It.IsAny<bool>())
+            .Generate();
 
         var validationResult = validator.Validate(createPostCommand);
         var validationResultErrors = validationResult.GetValidationErrors();
@@ -74,11 +73,10 @@ public class CreatePostCommandTest
     public async Task Should_Be_Invalid_When_SaveError()
     {
         // Arrange
-        var fakerCreatePostCommand = new AutoFaker<CreatePostCommand>()
+        var createPostCommand = new AutoFaker<CreatePostCommand>()
             .RuleFor(x => x.Title, x => x.Random.String2(3, 25))
-            .RuleFor(x => x.Text, x => x.Random.String2(3, 25));
-
-        var createPostCommand = fakerCreatePostCommand.Generate();
+            .RuleFor(x => x.Text, x => x.Random.String2(3, 25))
+            .Generate();
 
         var post = mapper.Map<CreatePostCommand, Post>(createPostCommand);
 
@@ -99,11 +97,10 @@ public class CreatePostCommandTest
     public async Task Should_Be_Valid()
     {
         // Arrange
-        var fakerCreatePostCommand = new AutoFaker<CreatePostCommand>()
+        var createPostCommand = new AutoFaker<CreatePostCommand>()
             .RuleFor(x => x.Title, x => x.Random.String2(3, 25))
-            .RuleFor(x => x.Text, x => x.Random.String2(3, 25));
-
-        var createPostCommand = fakerCreatePostCommand.Generate();
+            .RuleFor(x => x.Text, x => x.Random.String2(3, 25))
+            .Generate();
 
         var post = mapper.Map<CreatePostCommand, Post>(createPostCommand);
         var postDto = mapper.Map<Post, PostDto>(post);

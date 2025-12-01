@@ -47,8 +47,8 @@ public class GetPostsQueryTest
     public async Task Should_Be_Invalid_When_ValidationError()
     {
         // Arrange
-        var fakerGetPostsQuery = new AutoFaker<GetPostsQuery>();
-        var getPostsQuery = fakerGetPostsQuery.Generate();
+        var getPostsQuery = new AutoFaker<GetPostsQuery>()
+            .Generate();
 
         mockValidator.Setup(x => x.Validate(getPostsQuery)).Returns(new ValidationResult([new ValidationFailure("Property name", "Error message")]));
 
@@ -70,11 +70,11 @@ public class GetPostsQueryTest
     public async Task Should_Be_Valid_When_Empty()
     {
         // Arrange
+        var getPostsQuery = new AutoFaker<GetPostsQuery>()
+            .Generate();
+
         var posts = Array.Empty<Post>();
         var postDtos = mapper.Map<IEnumerable<PostDto>>(posts);
-
-        var fakerGetPostsQuery = new AutoFaker<GetPostsQuery>();
-        var getPostsQuery = fakerGetPostsQuery.Generate();
 
         mockValidator.Setup(x => x.Validate(getPostsQuery)).Returns(new ValidationResult());
         mockPostRepository.Setup(x => x.GetAsync(It.IsAny<CancellationToken>())).ReturnsAsync(posts);
@@ -93,12 +93,13 @@ public class GetPostsQueryTest
     public async Task Should_Be_Valid_When_Not_Empty()
     {
         // Arrange
-        var fakerPost = new AutoFaker<Post>();
-        var posts = fakerPost.Generate(100).ToArray();
-        var postDtos = mapper.Map<IEnumerable<PostDto>>(posts);
+        var getPostsQuery = new AutoFaker<GetPostsQuery>()
+            .Generate();
 
-        var fakerGetPostsQuery = new AutoFaker<GetPostsQuery>();
-        var getPostsQuery = fakerGetPostsQuery.Generate();
+        var posts = new AutoFaker<Post>()
+            .Generate(100).ToArray();
+
+        var postDtos = mapper.Map<IEnumerable<PostDto>>(posts);
 
         mockValidator.Setup(x => x.Validate(getPostsQuery)).Returns(new ValidationResult());
         mockPostRepository.Setup(x => x.GetAsync(It.IsAny<CancellationToken>())).ReturnsAsync(posts);

@@ -49,10 +49,9 @@ public class DeletePostCommandTest
     public async Task Should_Be_Invalid_When_ValidationError()
     {
         // Arrange
-        var fakerDeletePostCommand = new AutoFaker<DeletePostCommand>()
-            .RuleFor(x => x.Guid, _ => It.IsAny<Guid>());
-
-        var deletePostCommand = fakerDeletePostCommand.Generate();
+        var deletePostCommand = new AutoFaker<DeletePostCommand>()
+            .RuleFor(x => x.Guid, _ => It.IsAny<Guid>())
+            .Generate();
 
         var validationResult = validator.Validate(deletePostCommand);
         var validationResultErrors = validationResult.GetValidationErrors();
@@ -72,8 +71,8 @@ public class DeletePostCommandTest
     public async Task Should_Be_Invalid_When_NotFoundError()
     {
         // Arrange
-        var fakerDeletePostCommand = new AutoFaker<DeletePostCommand>();
-        var deletePostCommand = fakerDeletePostCommand.Generate();
+        var deletePostCommand = new AutoFaker<DeletePostCommand>()
+            .Generate();
 
         mockPostRepository.Setup(x => x.GetByGuidAsync(deletePostCommand.Guid, It.IsAny<CancellationToken>())).ReturnsAsync(It.IsAny<Post>());
 
@@ -92,13 +91,12 @@ public class DeletePostCommandTest
     public async Task Should_Be_Invalid_When_SaveError()
     {
         // Arrange
-        var fakerPost = new AutoFaker<Post>();
-        var post = fakerPost.Generate();
+        var deletePostCommand = new AutoFaker<DeletePostCommand>()
+            .Generate();
 
-        var fakerDeletePostCommand = new AutoFaker<DeletePostCommand>()
-            .RuleFor(x => x.Guid, _ => post.Guid);
-
-        var deletePostCommand = fakerDeletePostCommand.Generate();
+        var post = new AutoFaker<Post>()
+            .RuleFor(x => x.Guid, _ => deletePostCommand.Guid)
+            .Generate();
 
         mockPostRepository.Setup(x => x.GetByGuidAsync(deletePostCommand.Guid, It.IsAny<CancellationToken>())).ReturnsAsync(post);
         mockPostRepository.Setup(x => x.DeleteAsync(post, It.IsAny<CancellationToken>())).ReturnsAsync(false);
@@ -118,14 +116,14 @@ public class DeletePostCommandTest
     public async Task Should_Be_Valid()
     {
         // Arrange
-        var fakerPost = new AutoFaker<Post>();
-        var post = fakerPost.Generate();
+        var deletePostCommand = new AutoFaker<DeletePostCommand>()
+            .Generate();
+
+        var post = new AutoFaker<Post>()
+            .RuleFor(x => x.Guid, _ => deletePostCommand.Guid)
+            .Generate();
+
         var postDto = mapper.Map<Post, PostDto>(post);
-
-        var fakerDeletePostCommand = new AutoFaker<DeletePostCommand>()
-            .RuleFor(x => x.Guid, _ => post.Guid);
-
-        var deletePostCommand = fakerDeletePostCommand.Generate();
 
         mockPostRepository.Setup(x => x.GetByGuidAsync(deletePostCommand.Guid, It.IsAny<CancellationToken>())).ReturnsAsync(post);
         mockPostRepository.Setup(x => x.DeleteAsync(post, It.IsAny<CancellationToken>())).ReturnsAsync(true);

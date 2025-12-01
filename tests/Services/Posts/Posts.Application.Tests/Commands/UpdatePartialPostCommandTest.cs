@@ -49,10 +49,9 @@ public class UpdatePartialPostCommandTest
     public async Task Should_Be_Invalid_When_ValidationError()
     {
         // Arrange
-        var fakerUpdatePartialPostCommand = new AutoFaker<UpdatePartialPostCommand>()
-            .RuleFor(x => x.Guid, _ => It.IsAny<Guid>());
-
-        var updatePartialPostCommand = fakerUpdatePartialPostCommand.Generate();
+        var updatePartialPostCommand = new AutoFaker<UpdatePartialPostCommand>()
+            .RuleFor(x => x.Guid, _ => It.IsAny<Guid>())
+            .Generate();
 
         var validationResult = validator.Validate(updatePartialPostCommand);
         var validationResultErrors = validationResult.GetValidationErrors();
@@ -72,11 +71,10 @@ public class UpdatePartialPostCommandTest
     public async Task Should_Be_Invalid_When_NotFoundError()
     {
         // Arrange
-        var fakerUpdatePartialPostCommand = new AutoFaker<UpdatePartialPostCommand>()
+        var updatePartialPostCommand = new AutoFaker<UpdatePartialPostCommand>()
             .RuleFor(x => x.Title, x => x.Random.String2(3, 25))
-            .RuleFor(x => x.Text, x => x.Random.String2(3, 25));
-
-        var updatePartialPostCommand = fakerUpdatePartialPostCommand.Generate();
+            .RuleFor(x => x.Text, x => x.Random.String2(3, 25))
+            .Generate();
 
         mockPostRepository.Setup(x => x.GetByGuidAsync(updatePartialPostCommand.Guid, It.IsAny<CancellationToken>())).ReturnsAsync(It.IsAny<Post>());
 
@@ -95,19 +93,17 @@ public class UpdatePartialPostCommandTest
     public async Task Should_Be_Invalid_When_SaveError()
     {
         // Arrange
-        var fakerPost = new AutoFaker<Post>()
+        var updatePartialPostCommand = new AutoFaker<UpdatePartialPostCommand>()
             .RuleFor(x => x.Title, x => x.Random.String2(3, 25))
-            .RuleFor(x => x.Text, x => x.Random.String2(3, 25));
+            .RuleFor(x => x.Text, x => x.Random.String2(3, 25))
+            .Generate();
 
-        var post = fakerPost.Generate();
-
-        var fakerUpdatePartialPostCommand = new AutoFaker<UpdatePartialPostCommand>()
-            .RuleFor(x => x.Guid, _ => post.Guid)
-            .RuleFor(x => x.Title, _ => post.Title)
-            .RuleFor(x => x.Text, _ => post.Text)
-            .RuleFor(x => x.Visible, _ => post.Visible);
-
-        var updatePartialPostCommand = fakerUpdatePartialPostCommand.Generate();
+        var post = new AutoFaker<Post>()
+            .RuleFor(x => x.Guid, _ => updatePartialPostCommand.Guid)
+            .RuleFor(x => x.Title, _ => updatePartialPostCommand.Title)
+            .RuleFor(x => x.Text, _ => updatePartialPostCommand.Text)
+            .RuleFor(x => x.Visible, _ => updatePartialPostCommand.Visible)
+            .Generate();
 
         mockPostRepository.Setup(x => x.GetByGuidAsync(updatePartialPostCommand.Guid, It.IsAny<CancellationToken>())).ReturnsAsync(post);
         mockPostRepository.Setup(x => x.UpdateAsync(post, It.IsAny<CancellationToken>())).ReturnsAsync(false);
@@ -127,20 +123,18 @@ public class UpdatePartialPostCommandTest
     public async Task Should_Be_Valid_When_Title_Null()
     {
         // Arrange
-        var fakerPost = new AutoFaker<Post>()
-            .RuleFor(x => x.Title, x => x.Random.String2(3, 25))
-            .RuleFor(x => x.Text, x => x.Random.String2(3, 25));
-
-        var post = fakerPost.Generate();
-        var postDto = mapper.Map<Post, PostDto>(post);
-
-        var fakerUpdatePartialPostCommand = new AutoFaker<UpdatePartialPostCommand>()
-            .RuleFor(x => x.Guid, _ => post.Guid)
+        var updatePartialPostCommand = new AutoFaker<UpdatePartialPostCommand>()
             .RuleFor(x => x.Title, _ => null)
-            .RuleFor(x => x.Text, _ => post.Text)
-            .RuleFor(x => x.Visible, _ => post.Visible);
+            .RuleFor(x => x.Text, x => x.Random.String2(3, 25))
+            .Generate();
 
-        var updatePartialPostCommand = fakerUpdatePartialPostCommand.Generate();
+        var post = new AutoFaker<Post>()
+            .RuleFor(x => x.Guid, _ => updatePartialPostCommand.Guid)
+            .RuleFor(x => x.Text, _ => updatePartialPostCommand.Text)
+            .RuleFor(x => x.Visible, _ => updatePartialPostCommand.Visible)
+            .Generate();
+
+        var postDto = mapper.Map<Post, PostDto>(post);
 
         mockPostRepository.Setup(x => x.GetByGuidAsync(updatePartialPostCommand.Guid, It.IsAny<CancellationToken>())).ReturnsAsync(post);
         mockPostRepository.Setup(x => x.UpdateAsync(post, It.IsAny<CancellationToken>())).ReturnsAsync(true);
@@ -159,20 +153,18 @@ public class UpdatePartialPostCommandTest
     public async Task Should_Be_Valid_When_Text_Null()
     {
         // Arrange
-        var fakerPost = new AutoFaker<Post>()
+        var updatePartialPostCommand = new AutoFaker<UpdatePartialPostCommand>()
             .RuleFor(x => x.Title, x => x.Random.String2(3, 25))
-            .RuleFor(x => x.Text, x => x.Random.String2(3, 25));
-
-        var post = fakerPost.Generate();
-        var postDto = mapper.Map<Post, PostDto>(post);
-
-        var fakerUpdatePartialPostCommand = new AutoFaker<UpdatePartialPostCommand>()
-            .RuleFor(x => x.Guid, _ => post.Guid)
-            .RuleFor(x => x.Title, _ => post.Title)
             .RuleFor(x => x.Text, _ => null)
-            .RuleFor(x => x.Visible, _ => post.Visible);
+            .Generate();
 
-        var updatePartialPostCommand = fakerUpdatePartialPostCommand.Generate();
+        var post = new AutoFaker<Post>()
+            .RuleFor(x => x.Guid, _ => updatePartialPostCommand.Guid)
+            .RuleFor(x => x.Title, _ => updatePartialPostCommand.Title)
+            .RuleFor(x => x.Visible, _ => updatePartialPostCommand.Visible)
+            .Generate();
+
+        var postDto = mapper.Map<Post, PostDto>(post);
 
         mockPostRepository.Setup(x => x.GetByGuidAsync(updatePartialPostCommand.Guid, It.IsAny<CancellationToken>())).ReturnsAsync(post);
         mockPostRepository.Setup(x => x.UpdateAsync(post, It.IsAny<CancellationToken>())).ReturnsAsync(true);
@@ -191,20 +183,19 @@ public class UpdatePartialPostCommandTest
     public async Task Should_Be_Valid_When_Visible_Null()
     {
         // Arrange
-        var fakerPost = new AutoFaker<Post>()
+        var updatePartialPostCommand = new AutoFaker<UpdatePartialPostCommand>()
             .RuleFor(x => x.Title, x => x.Random.String2(3, 25))
-            .RuleFor(x => x.Text, x => x.Random.String2(3, 25));
+            .RuleFor(x => x.Text, x => x.Random.String2(3, 25))
+            .RuleFor(x => x.Visible, _ => null)
+            .Generate();
 
-        var post = fakerPost.Generate();
+        var post = new AutoFaker<Post>()
+            .RuleFor(x => x.Guid, _ => updatePartialPostCommand.Guid)
+            .RuleFor(x => x.Title, _ => updatePartialPostCommand.Title)
+            .RuleFor(x => x.Text, _ => updatePartialPostCommand.Text)
+            .Generate();
+
         var postDto = mapper.Map<Post, PostDto>(post);
-
-        var fakerUpdatePartialPostCommand = new AutoFaker<UpdatePartialPostCommand>()
-            .RuleFor(x => x.Guid, _ => post.Guid)
-            .RuleFor(x => x.Title, _ => post.Title)
-            .RuleFor(x => x.Text, _ => post.Text)
-            .RuleFor(x => x.Visible, _ => null);
-
-        var updatePartialPostCommand = fakerUpdatePartialPostCommand.Generate();
 
         mockPostRepository.Setup(x => x.GetByGuidAsync(updatePartialPostCommand.Guid, It.IsAny<CancellationToken>())).ReturnsAsync(post);
         mockPostRepository.Setup(x => x.UpdateAsync(post, It.IsAny<CancellationToken>())).ReturnsAsync(true);
@@ -223,20 +214,19 @@ public class UpdatePartialPostCommandTest
     public async Task Should_Be_Valid()
     {
         // Arrange
-        var fakerPost = new AutoFaker<Post>()
+        var updatePartialPostCommand = new AutoFaker<UpdatePartialPostCommand>()
             .RuleFor(x => x.Title, x => x.Random.String2(3, 25))
-            .RuleFor(x => x.Text, x => x.Random.String2(3, 25));
+            .RuleFor(x => x.Text, x => x.Random.String2(3, 25))
+            .Generate();
 
-        var post = fakerPost.Generate();
+        var post = new AutoFaker<Post>()
+            .RuleFor(x => x.Guid, _ => updatePartialPostCommand.Guid)
+            .RuleFor(x => x.Title, _ => updatePartialPostCommand.Title)
+            .RuleFor(x => x.Text, _ => updatePartialPostCommand.Text)
+            .RuleFor(x => x.Visible, _ => updatePartialPostCommand.Visible)
+            .Generate();
+
         var postDto = mapper.Map<Post, PostDto>(post);
-
-        var fakerUpdatePartialPostCommand = new AutoFaker<UpdatePartialPostCommand>()
-            .RuleFor(x => x.Guid, _ => post.Guid)
-            .RuleFor(x => x.Title, _ => post.Title)
-            .RuleFor(x => x.Text, _ => post.Text)
-            .RuleFor(x => x.Visible, _ => post.Visible);
-
-        var updatePartialPostCommand = fakerUpdatePartialPostCommand.Generate();
 
         mockPostRepository.Setup(x => x.GetByGuidAsync(updatePartialPostCommand.Guid, It.IsAny<CancellationToken>())).ReturnsAsync(post);
         mockPostRepository.Setup(x => x.UpdateAsync(post, It.IsAny<CancellationToken>())).ReturnsAsync(true);
