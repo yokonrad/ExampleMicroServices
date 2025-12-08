@@ -6,5 +6,8 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.yml" />
+    <None Include="services\comments.yml" />
+    <None Include="services\gateway.yml" />
+    <None Include="services\posts.yml" />
   </ItemGroup>
 </Project>

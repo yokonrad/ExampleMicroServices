@@ -1,0 +1,27 @@
+services:
+  commentsDb:
+    image: 'mcr.microsoft.com/mssql/server:2022-latest'
+    container_name: 'commentsDb'
+    environment:
+      TZ: 'Europe/Warsaw'
+      ACCEPT_EULA: 'Y'
+      MSSQL_SA_PASSWORD: 'Example123password'
+      MSSQL_PID: 'Express'
+    ports:
+      - '5102:1433'
+    restart: 'unless-stopped'
+  comments:
+    image: 'comments'
+    pull_policy: 'build'
+    container_name: 'comments'
+    build:
+      context: '../../src'
+      dockerfile: 'Services/Comments/Comments.WebAPI/Dockerfile'
+    depends_on:
+      commentsDb:
+        condition: service_started
+    environment:
+      TZ: 'Europe/Warsaw'
+    ports:
+      - '5002:5002'
+    restart: 'unless-stopped'

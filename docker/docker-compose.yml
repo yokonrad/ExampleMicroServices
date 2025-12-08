@@ -1,76 +1,22 @@
 name: 'examplemicroservices'
 services:
   gateway:
-    profiles: ['backend']
-    image: 'gateway'
-    pull_policy: 'build'
-    container_name: 'gateway'
-    build:
-      context: '../src'
-      dockerfile: 'Core/Core.GatewayAPI/Dockerfile'
-    depends_on:
-      posts:
-        condition: service_started
-      comments:
-        condition: service_started
-    environment:
-      TZ: 'Europe/Warsaw'
-    ports:
-      - '5000:5000'
-    restart: 'unless-stopped'
+    extends:
+      file: 'services/gateway.yml'
+      service: 'gateway'
   postsDb:
-    profiles: ['backend']
-    image: 'mcr.microsoft.com/mssql/server:2022-latest'
-    container_name: 'postsDb'
-    environment:
-      TZ: 'Europe/Warsaw'
-      ACCEPT_EULA: 'Y'
-      MSSQL_SA_PASSWORD: 'Example123password'
-      MSSQL_PID: 'Express'
-    ports:
-      - '5101:1433'
-    restart: 'unless-stopped'
+    extends:
+      file: 'services/posts.yml'
+      service: 'postsDb'
   commentsDb:
-    profiles: ['backend']
-    image: 'mcr.microsoft.com/mssql/server:2022-latest'
-    container_name: 'commentsDb'
-    environment:
-      TZ: 'Europe/Warsaw'
-      ACCEPT_EULA: 'Y'
-      MSSQL_SA_PASSWORD: 'Example123password'
-      MSSQL_PID: 'Express'
-    ports:
-      - '5102:1433'
-    restart: 'unless-stopped'
+    extends:
+      file: 'services/comments.yml'
+      service: 'commentsDb'
   posts:
-    profiles: ['backend']
-    image: 'posts'
-    pull_policy: 'build'
-    container_name: 'posts'
-    build:
-      context: '../src'
-      dockerfile: 'Services/Posts/Posts.WebAPI/Dockerfile'
-    depends_on:
-      postsDb:
-        condition: service_started
-    environment:
-      TZ: 'Europe/Warsaw'
-    ports:
-      - '5001:5001'
-    restart: 'unless-stopped'
+    extends:
+      file: 'services/posts.yml'
+      service: 'posts'
   comments:
-    profiles: ['backend']
-    image: 'comments'
-    pull_policy: 'build'
-    container_name: 'comments'
-    build:
-      context: '../src'
-      dockerfile: 'Services/Comments/Comments.WebAPI/Dockerfile'
-    depends_on:
-      commentsDb:
-        condition: service_started
-    environment:
-      TZ: 'Europe/Warsaw'
-    ports:
-      - '5002:5002'
-    restart: 'unless-stopped'
+    extends:
+      file: 'services/comments.yml'
+      service: 'comments'

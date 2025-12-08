@@ -6,8 +6,12 @@
       "composeLaunchAction": "LaunchBrowser",
       "composeLaunchServiceName": "gateway",
       "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger",
-      "composeProfile": {
-        "includes": [ "backend" ]
+      "serviceActions": {
+        "postsDb": "StartWithoutDebugging",
+        "commentsDb": "StartWithoutDebugging",
+        "gateway": "StartDebugging",
+        "posts": "StartDebugging",
+        "comments": "StartDebugging"
       }
     }
   }
