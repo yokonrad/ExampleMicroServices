@@ -43,6 +43,7 @@
     <Project Path="tests/Services/Posts/Posts.Infrastructure.Tests/Posts.Infrastructure.Tests.csproj" />
     <Project Path="tests/Services/Posts/Posts.WebAPI.Tests/Posts.WebAPI.Tests.csproj" />
   </Folder>
+  <Project Path="build/build.csproj" />
   <Project Path="docker/docker.dcproj">
     <Build />
   </Project>
