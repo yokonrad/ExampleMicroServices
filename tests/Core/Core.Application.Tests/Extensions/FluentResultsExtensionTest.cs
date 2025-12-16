@@ -11,7 +11,11 @@ public class FluentResultsExtensionTest
     public void GetValidationErrors_Should_Be_Not_Empty_When_Invalid()
     {
         // Arrange
-        var result = Result.Fail<ValidationError>([new ValidationError("Property name", "Error message")]);
+        var result = Result.Fail<ValidationError>([
+            new ValidationError("Property name", "Error message1"),
+            new ValidationError("Property name", "Error message2"),
+            new ValidationError("Property name", "Error message3"),
+        ]);
 
         // Act
         var act = result.GetValidationErrors();
