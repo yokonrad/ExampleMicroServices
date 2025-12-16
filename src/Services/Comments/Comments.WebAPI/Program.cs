@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Comments.WebAPI;
 
-public static class Program
+public class Program
 {
     public static async Task Main(string[] args)
     {
