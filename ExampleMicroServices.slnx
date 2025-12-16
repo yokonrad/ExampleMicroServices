@@ -4,6 +4,7 @@
     <File Path=".gitattributes" />
     <File Path=".gitignore" />
     <File Path=".runsettings" />
+    <File Path="LICENSE.md" />
     <File Path="README.md" />
   </Folder>
   <Folder Name="/src/" />
