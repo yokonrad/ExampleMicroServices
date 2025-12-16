@@ -5,7 +5,7 @@ using Posts.WebAPI.Extensions;
 
 namespace Posts.WebAPI;
 
-public static class Program
+public class Program
 {
     public static async Task Main(string[] args)
     {
