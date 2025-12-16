@@ -1,16 +1,22 @@
 using Nuke.Common;
+using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DockerCompose;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.NUnit;
 using Nuke.Common.Tools.ReportGenerator;
+using Serilog;
+using Serilog.Events;
 using static Nuke.Common.Tools.DockerCompose.DockerComposeTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using static Nuke.Common.Tools.ReportGenerator.ReportGeneratorTasks;
 
 namespace build;
 
+[GitHubActions(nameof(Compile), GitHubActionsImage.UbuntuLatest, On = new[] { GitHubActionsTrigger.WorkflowDispatch }, InvokedTargets = new[] { nameof(Compile) })]
+[GitHubActions(nameof(TestResults), GitHubActionsImage.UbuntuLatest, On = new[] { GitHubActionsTrigger.WorkflowDispatch }, InvokedTargets = new[] { nameof(TestResults) })]
+[GitHubActions(nameof(TestReport), GitHubActionsImage.UbuntuLatest, On = new[] { GitHubActionsTrigger.WorkflowDispatch }, InvokedTargets = new[] { nameof(TestReport) })]
 public class Build : NukeBuild
 {
     public static int Main() => Execute<Build>(x => x.Compile);
@@ -25,15 +31,40 @@ public class Build : NukeBuild
     private static AbsolutePath SourceDirectory => $"{RootDirectory}/src";
     private static AbsolutePath TestsDirectory => $"{RootDirectory}/tests";
     private static AbsolutePath TestResultsDirectory => $"{RootDirectory}/TestResults";
+    private static AbsolutePath TestReportDirectory => $"{TestResultsDirectory}/TestReport";
 
     private Target Clean => _ => _
         .Before(Restore)
         .Executes(() =>
         {
-            DockerDirectory.GlobDirectories("**/{bin,obj}").DeleteDirectories();
-            SourceDirectory.GlobDirectories("**/{bin,obj}").DeleteDirectories();
-            TestsDirectory.GlobDirectories("**/{bin,obj}").DeleteDirectories();
-            TestResultsDirectory.DeleteDirectory();
+            Log.Write(LogEventLevel.Information, "Running {Clean} pipeline...", nameof(Clean));
+
+            var absolutePathsToClean = new AbsolutePath[]
+            {
+                DockerDirectory,
+                SourceDirectory,
+                TestsDirectory,
+            };
+
+            var absolutePathsToRemove = new AbsolutePath[]
+            {
+                TestReportDirectory,
+                TestResultsDirectory,
+            };
+
+            foreach (var absolutePath in absolutePathsToClean)
+            {
+                Log.Write(LogEventLevel.Information, "Cleaning directory: {AbsolutePathName}", absolutePath.Name);
+
+                absolutePath.GlobDirectories("**/{bin,obj}").DeleteDirectories();
+            }
+
+            foreach (var absolutePath in absolutePathsToRemove)
+            {
+                Log.Write(LogEventLevel.Information, "Removing directory: {AbsolutePathName}", absolutePath.Name);
+
+                absolutePath.DeleteDirectory();
+            }
         });
 
     private Target Restore => _ => _
@@ -41,6 +72,8 @@ public class Build : NukeBuild
         .Before(Compile)
         .Executes(() =>
         {
+            Log.Write(LogEventLevel.Information, "Running {Restore} pipeline...", nameof(Restore));
+
             DotNetRestore(s => s
                 .SetProjectFile(Solution));
         });
@@ -49,26 +82,39 @@ public class Build : NukeBuild
         .DependsOn(Restore)
         .Executes(() =>
         {
+            Log.Write(LogEventLevel.Information, "Running {Compile} pipeline...", nameof(Compile));
+
             DotNetBuild(s => s
                 .SetProjectFile(Solution)
                 .SetConfiguration(Configuration)
                 .EnableNoRestore());
         });
 
-    private Target Test => _ => _
+    private Target TestResults => _ => _
         .DependsOn(Compile)
+        .Produces(TestResultsDirectory)
         .Executes(() =>
         {
+            Log.Write(LogEventLevel.Information, "Running {TestResults} pipeline...", nameof(TestResults));
+
             DotNetTest(s => s
                 .SetProjectFile(Solution)
                 .SetConfiguration(Configuration)
                 .SetSettingsFile($"--settings:{$"{RootDirectory}/.runsettings"}")
                 .EnableNoRestore()
                 .EnableNoBuild());
+        });
+
+    private Target TestReport => _ => _
+        .DependsOn(TestResults)
+        .Produces(TestReportDirectory)
+        .Executes(() =>
+        {
+            Log.Write(LogEventLevel.Information, "Running {TestReport} pipeline...", nameof(TestReport));
 
             ReportGenerator(s => s
                 .AddReports(string.Join(',', TestResultsDirectory.GetFiles("*.xml", depth: 2)))
-                .SetTargetDirectory($"{TestResultsDirectory}/Report"));
+                .SetTargetDirectory(TestReportDirectory));
         });
 
     private Target DockerComposeUp => _ => _

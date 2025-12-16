@@ -29,7 +29,8 @@
         "DockerComposeDown",
         "DockerComposeUp",
         "Restore",
-        "Test"
+        "TestReport",
+        "TestResults"
       ]
     },
     "Verbosity": {
