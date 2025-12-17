@@ -107,6 +107,7 @@ public class Build : NukeBuild
 
     private Target TestReport => _ => _
         .DependsOn(TestResults)
+        .Consumes(TestResults)
         .Produces(TestReportDirectory)
         .Executes(() =>
         {
