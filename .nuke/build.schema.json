@@ -28,9 +28,10 @@
         "Compile",
         "DockerComposeDown",
         "DockerComposeUp",
+        "Publish_TestReport",
+        "Publish_TestResults",
         "Restore",
-        "TestReport",
-        "TestResults"
+        "Test"
       ]
     },
     "Verbosity": {

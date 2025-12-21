@@ -9,12 +9,12 @@
 #
 #     - To trigger manual generation invoke:
 #
-#         nuke --generate-configuration GitHubActions_TestResults --host GitHubActions
+#         nuke --generate-configuration GitHubActions_Publish_TestResults --host GitHubActions
 #
 # </auto-generated>
 # ------------------------------------------------------------------------------
 
-name: TestResults
+name: Publish_TestResults
 
 on: [workflow_dispatch]
 
@@ -31,8 +31,8 @@ jobs:
             .nuke/temp
             ~/.nuget/packages
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
-      - name: 'Run: TestResults'
-        run: ./build.cmd TestResults
+      - name: 'Run: Publish_TestResults'
+        run: ./build.cmd Publish_TestResults
       - name: 'Publish: TestResults'
         uses: actions/upload-artifact@v5
         with:

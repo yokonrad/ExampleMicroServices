@@ -14,9 +14,9 @@ using static Nuke.Common.Tools.ReportGenerator.ReportGeneratorTasks;
 
 namespace build;
 
-[GitHubActions(nameof(Compile), GitHubActionsImage.UbuntuLatest, On = new[] { GitHubActionsTrigger.WorkflowDispatch }, InvokedTargets = new[] { nameof(Compile) })]
-[GitHubActions(nameof(TestResults), GitHubActionsImage.UbuntuLatest, On = new[] { GitHubActionsTrigger.WorkflowDispatch }, InvokedTargets = new[] { nameof(TestResults) })]
-[GitHubActions(nameof(TestReport), GitHubActionsImage.UbuntuLatest, On = new[] { GitHubActionsTrigger.WorkflowDispatch }, InvokedTargets = new[] { nameof(TestReport) })]
+[GitHubActions(nameof(Publish_TestResults), GitHubActionsImage.UbuntuLatest, On = new[] { GitHubActionsTrigger.WorkflowDispatch }, InvokedTargets = new[] { nameof(Publish_TestResults) })]
+[GitHubActions(nameof(Publish_TestReport), GitHubActionsImage.UbuntuLatest, On = new[] { GitHubActionsTrigger.WorkflowDispatch }, InvokedTargets = new[] { nameof(Publish_TestReport) })]
+[GitHubActions(nameof(Test), GitHubActionsImage.UbuntuLatest, On = new[] { GitHubActionsTrigger.PullRequest }, InvokedTargets = new[] { nameof(Test) })]
 public class Build : NukeBuild
 {
     public static int Main() => Execute<Build>(x => x.Compile);
@@ -72,7 +72,7 @@ public class Build : NukeBuild
         .Before(Compile)
         .Executes(() =>
         {
-            Log.Write(LogEventLevel.Information, "Running {Restore} pipeline...", nameof(Restore));
+            Log.Write(LogEventLevel.Information, "Running {Target} pipeline...", nameof(Restore));
 
             DotNetRestore(s => s
                 .SetProjectFile(Solution));
@@ -82,7 +82,7 @@ public class Build : NukeBuild
         .DependsOn(Restore)
         .Executes(() =>
         {
-            Log.Write(LogEventLevel.Information, "Running {Compile} pipeline...", nameof(Compile));
+            Log.Write(LogEventLevel.Information, "Running {Target} pipeline...", nameof(Compile));
 
             DotNetBuild(s => s
                 .SetProjectFile(Solution)
@@ -90,12 +90,11 @@ public class Build : NukeBuild
                 .EnableNoRestore());
         });
 
-    private Target TestResults => _ => _
+    private Target Test => _ => _
         .DependsOn(Compile)
-        .Produces(TestResultsDirectory)
         .Executes(() =>
         {
-            Log.Write(LogEventLevel.Information, "Running {TestResults} pipeline...", nameof(TestResults));
+            Log.Write(LogEventLevel.Information, "Running {Target} pipeline...", nameof(Test));
 
             DotNetTest(s => s
                 .SetProjectFile(Solution)
@@ -105,13 +104,28 @@ public class Build : NukeBuild
                 .EnableNoBuild());
         });
 
-    private Target TestReport => _ => _
-        .DependsOn(TestResults)
-        .Consumes(TestResults)
+    private Target Publish_TestResults => _ => _
+        .DependsOn(Compile)
+        .Produces(TestResultsDirectory)
+        .Executes(() =>
+        {
+            Log.Write(LogEventLevel.Information, "Running {Target} pipeline...", nameof(Publish_TestResults));
+
+            DotNetTest(s => s
+                .SetProjectFile(Solution)
+                .SetConfiguration(Configuration)
+                .SetSettingsFile($"--settings:{$"{RootDirectory}/.runsettings"}")
+                .EnableNoRestore()
+                .EnableNoBuild());
+        });
+
+    private Target Publish_TestReport => _ => _
+        .DependsOn(Publish_TestResults)
+        .Consumes(Publish_TestResults)
         .Produces(TestReportDirectory)
         .Executes(() =>
         {
-            Log.Write(LogEventLevel.Information, "Running {TestReport} pipeline...", nameof(TestReport));
+            Log.Write(LogEventLevel.Information, "Running {Target} pipeline...", nameof(Publish_TestReport));
 
             ReportGenerator(s => s
                 .AddReports(string.Join(',', TestResultsDirectory.GetFiles("*.xml", depth: 2)))
@@ -121,6 +135,8 @@ public class Build : NukeBuild
     private Target DockerComposeUp => _ => _
         .Executes(() =>
         {
+            Log.Write(LogEventLevel.Information, "Running {Target} pipeline...", nameof(DockerComposeUp));
+
             DockerCompose(s => s
                 .SetYmlFile($"{DockerDirectory}/docker-compose.yml")
                 .Up());
@@ -129,6 +145,8 @@ public class Build : NukeBuild
     private Target DockerComposeDown => _ => _
         .Executes(() =>
         {
+            Log.Write(LogEventLevel.Information, "Running {Target} pipeline...", nameof(DockerComposeDown));
+
             DockerCompose(s => s
                 .SetYmlFile($"{DockerDirectory}/docker-compose.yml")
                 .Down());
